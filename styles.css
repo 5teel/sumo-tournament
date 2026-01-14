@@ -160,6 +160,311 @@ body {
     display: block;
 }
 
+/* Registration Page */
+.register-hero {
+    min-height: 100vh;
+    background-image: url('images/empty dohyo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.register-hero.active {
+    display: flex;
+}
+
+.register-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+.register-title {
+    font-size: 2.2rem;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    margin-bottom: 0.5rem;
+}
+
+.register-subtitle {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+.register-form-container {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+}
+
+.register-step {
+    display: none;
+}
+
+.register-step.active {
+    display: block;
+}
+
+.register-step h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #555;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+}
+
+/* Register Wrestler Grid */
+.register-wrestler-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.register-wrestler-card {
+    background: #f9f9f9;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    padding: 0.8rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.register-wrestler-card:hover {
+    border-color: #ff6b6b;
+    transform: translateY(-2px);
+}
+
+.register-wrestler-card.selected {
+    border-color: #ff6b6b;
+    background: #ffe5e5;
+}
+
+.register-wrestler-card img {
+    width: 60px;
+    height: 106px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-bottom: 0.4rem;
+}
+
+.register-wrestler-card .name {
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+.register-wrestler-card .rank {
+    font-size: 0.65rem;
+    color: #666;
+}
+
+/* Register Builder */
+.register-builder {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.register-wrestler-preview {
+    text-align: center;
+}
+
+.register-wrestler-preview img {
+    width: 170px;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 4px solid #ff6b6b;
+    margin-bottom: 0.5rem;
+}
+
+.register-wrestler-preview h4 {
+    color: #333;
+    margin-bottom: 0.2rem;
+}
+
+.register-wrestler-preview p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.register-stats {
+    padding: 1rem;
+}
+
+.points-remaining {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.register-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.register-stats .stat-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.register-stats .stat-control {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.register-stats .stat-control button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #ff6b6b;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.register-stats .stat-control button:hover {
+    background: #ee5a5a;
+}
+
+.register-stats .stat-control span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+.signature-move-select {
+    margin-top: 1rem;
+}
+
+.signature-move-select label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.signature-move-select select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/* Step Buttons */
+.step-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.back-button {
+    padding: 0.8rem 2rem;
+    border: 2px solid #ddd;
+    border-radius: 50px;
+    background: white;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.back-button:hover {
+    border-color: #999;
+    color: #333;
+}
+
+/* Registration Success */
+.registration-success {
+    text-align: center;
+    padding: 2rem;
+}
+
+.registration-success h2 {
+    color: #27ae60;
+    margin-bottom: 1.5rem;
+}
+
+.success-rikishi {
+    margin-bottom: 1.5rem;
+}
+
+.success-rikishi img {
+    width: 170px;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 4px solid #27ae60;
+    margin-bottom: 0.5rem;
+}
+
+.success-rikishi h3 {
+    color: #333;
+    margin-bottom: 0.2rem;
+}
+
+.success-rikishi p {
+    color: #666;
+}
+
+.registration-success > p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
 /* Legacy styles for other sections */
 .title {
     font-size: 3rem;

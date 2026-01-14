@@ -99,6 +99,181 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================
+// REGISTRATION PAGE FUNCTIONS
+// ==========================================
+let registerSelectedWrestler = null;
+let registerStats = { height: 5, weight: 5, speed: 5, technique: 5 };
+let registerPointsRemaining = 10;
+
+function showRegistrationPage() {
+    showSection('register');
+    initRegisterWrestlerGrid();
+    initRegisterSignatureMoves();
+    resetRegistration();
+}
+
+function resetRegistration() {
+    registerSelectedWrestler = null;
+    registerStats = { height: 5, weight: 5, speed: 5, technique: 5 };
+    registerPointsRemaining = 10;
+
+    document.getElementById('player-email').value = '';
+    document.getElementById('player-name').value = '';
+    document.getElementById('rikishi-name').value = '';
+
+    updateRegisterStatsDisplay();
+    showRegisterStep(1);
+}
+
+function initRegisterWrestlerGrid() {
+    const grid = document.getElementById('register-wrestler-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    wrestlerData.forEach(wrestler => {
+        const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+        const card = document.createElement('div');
+        card.className = 'register-wrestler-card';
+        card.dataset.wrestlerId = wrestler.id;
+        card.innerHTML = `
+            <img src="${savedImage || placeholderImage}" alt="${wrestler.name}" onerror="this.onerror=null; this.src='${placeholderImage}'">
+            <div class="name">${wrestler.name}</div>
+            <div class="rank">${wrestler.rank}</div>
+        `;
+        card.addEventListener('click', () => selectRegisterWrestler(wrestler, card));
+        grid.appendChild(card);
+    });
+}
+
+function initRegisterSignatureMoves() {
+    const select = document.getElementById('register-signature-move');
+    if (!select) return;
+
+    select.innerHTML = '<option value="">-- Select Your Finishing Move --</option>';
+    signatureMoves.forEach(move => {
+        const option = document.createElement('option');
+        option.value = move.id;
+        option.textContent = `${move.name} (${move.japanese}) - ${move.description}`;
+        select.appendChild(option);
+    });
+}
+
+function selectRegisterWrestler(wrestler, cardElement) {
+    document.querySelectorAll('.register-wrestler-card').forEach(c => c.classList.remove('selected'));
+    cardElement.classList.add('selected');
+    registerSelectedWrestler = wrestler;
+    document.getElementById('step2-next').disabled = false;
+}
+
+function showRegisterStep(step) {
+    document.querySelectorAll('.register-step').forEach(s => s.classList.remove('active'));
+    const stepEl = document.getElementById(`register-step-${step}`);
+    if (stepEl) stepEl.classList.add('active');
+    if (step === 'complete') {
+        document.getElementById('register-complete').classList.add('active');
+    }
+}
+
+function goToStep1() {
+    showRegisterStep(1);
+}
+
+function goToStep2() {
+    const email = document.getElementById('player-email').value.trim();
+    const name = document.getElementById('player-name').value.trim();
+
+    if (!email || !name) {
+        alert('Please enter your email and name');
+        return;
+    }
+
+    showRegisterStep(2);
+}
+
+function goToStep3() {
+    if (!registerSelectedWrestler) {
+        alert('Please select a wrestler');
+        return;
+    }
+
+    const savedImage = ImageManager.getWrestlerImage(registerSelectedWrestler.id);
+    const rikishiName = document.getElementById('rikishi-name').value.trim() || registerSelectedWrestler.name;
+
+    document.getElementById('register-wrestler-image').src = savedImage || placeholderImage;
+    document.getElementById('register-wrestler-name').textContent = rikishiName;
+    document.getElementById('register-wrestler-rank').textContent = registerSelectedWrestler.rank;
+
+    showRegisterStep(3);
+}
+
+function adjustRegisterStat(stat, delta) {
+    const newValue = registerStats[stat] + delta;
+    const newPoints = registerPointsRemaining - delta;
+
+    if (newValue < 1 || newValue > 10) return;
+    if (newPoints < 0 || newPoints > 20) return;
+
+    registerStats[stat] = newValue;
+    registerPointsRemaining = newPoints;
+    updateRegisterStatsDisplay();
+}
+
+function updateRegisterStatsDisplay() {
+    document.getElementById('register-points').textContent = registerPointsRemaining;
+    document.getElementById('register-stat-height').textContent = registerStats.height;
+    document.getElementById('register-stat-weight').textContent = registerStats.weight;
+    document.getElementById('register-stat-speed').textContent = registerStats.speed;
+    document.getElementById('register-stat-technique').textContent = registerStats.technique;
+}
+
+function completeRegistration() {
+    const moveSelect = document.getElementById('register-signature-move');
+    if (!moveSelect.value) {
+        alert('Please select a signature move');
+        return;
+    }
+
+    const email = document.getElementById('player-email').value.trim();
+    const playerName = document.getElementById('player-name').value.trim();
+    const rikishiName = document.getElementById('rikishi-name').value.trim() || registerSelectedWrestler.name;
+    const selectedMove = signatureMoves.find(m => m.id === parseInt(moveSelect.value));
+
+    // Create participant
+    const participantId = Date.now();
+    const participant = { id: participantId, name: playerName, email: email };
+
+    participants.push(participant);
+    selectedWrestlers[participantId] = registerSelectedWrestler.id;
+    customWrestlerNames[participantId] = rikishiName;
+    characterBuilds[participantId] = {
+        stats: { ...registerStats },
+        move: selectedMove
+    };
+
+    // Show success
+    const savedImage = ImageManager.getWrestlerImage(registerSelectedWrestler.id);
+    document.getElementById('success-wrestler-image').src = savedImage || placeholderImage;
+    document.getElementById('success-rikishi-name').textContent = rikishiName;
+    document.getElementById('success-wrestler-rank').textContent = registerSelectedWrestler.rank;
+
+    showRegisterStep('complete');
+
+    console.log('Registration complete:', {
+        participant,
+        wrestler: registerSelectedWrestler.name,
+        rikishiName,
+        stats: registerStats,
+        move: selectedMove.name
+    });
+}
+
+function goToTournament() {
+    showSection('tournament');
+    showTournamentView('registration');
+    updateParticipantList();
+}
+
+// ==========================================
 // TEST MODE FUNCTIONS
 // ==========================================
 function startTestMode() {

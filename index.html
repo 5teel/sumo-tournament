@@ -37,7 +37,121 @@
                 </iframe>
             </div>
 
-            <button class="cta-button" onclick="showSection('tournament')">Join Tournament</button>
+            <button class="cta-button" onclick="showRegistrationPage()">Register for Sumo</button>
+        </div>
+    </section>
+
+    <!-- Registration Page -->
+    <section id="register" class="section register-hero">
+        <div class="hero-overlay"></div>
+        <div class="register-container">
+            <h1 class="register-title">Register Your Rikishi</h1>
+            <p class="register-subtitle">Create your sumo wrestler and prepare for battle</p>
+
+            <div class="register-form-container">
+                <!-- Step 1: Basic Info -->
+                <div id="register-step-1" class="register-step active">
+                    <h3>Step 1: Your Details</h3>
+                    <div class="form-group">
+                        <label for="player-email">Email Address</label>
+                        <input type="email" id="player-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="player-name">Your Name</label>
+                        <input type="text" id="player-name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rikishi-name">Name Your Rikishi</label>
+                        <input type="text" id="rikishi-name" placeholder="Give your wrestler a shikona (ring name)">
+                    </div>
+                    <button class="cta-button" onclick="goToStep2()">Next: Choose Your Rikishi</button>
+                </div>
+
+                <!-- Step 2: Select Wrestler -->
+                <div id="register-step-2" class="register-step">
+                    <h3>Step 2: Select Your Rikishi</h3>
+                    <div class="register-wrestler-grid" id="register-wrestler-grid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <div class="step-buttons">
+                        <button class="back-button" onclick="goToStep1()">Back</button>
+                        <button class="cta-button" id="step2-next" onclick="goToStep3()" disabled>Next: Assign Stats</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Character Stats -->
+                <div id="register-step-3" class="register-step">
+                    <h3>Step 3: Build Your Rikishi</h3>
+                    <div class="register-builder">
+                        <div class="register-wrestler-preview">
+                            <img id="register-wrestler-image" src="" alt="Selected Wrestler">
+                            <h4 id="register-wrestler-name"></h4>
+                            <p id="register-wrestler-rank"></p>
+                        </div>
+                        <div class="register-stats">
+                            <div class="points-remaining">
+                                Points Remaining: <span id="register-points">10</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Height</span>
+                                <div class="stat-control">
+                                    <button onclick="adjustRegisterStat('height', -1)">-</button>
+                                    <span id="register-stat-height">5</span>
+                                    <button onclick="adjustRegisterStat('height', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Weight</span>
+                                <div class="stat-control">
+                                    <button onclick="adjustRegisterStat('weight', -1)">-</button>
+                                    <span id="register-stat-weight">5</span>
+                                    <button onclick="adjustRegisterStat('weight', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Speed</span>
+                                <div class="stat-control">
+                                    <button onclick="adjustRegisterStat('speed', -1)">-</button>
+                                    <span id="register-stat-speed">5</span>
+                                    <button onclick="adjustRegisterStat('speed', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Technique</span>
+                                <div class="stat-control">
+                                    <button onclick="adjustRegisterStat('technique', -1)">-</button>
+                                    <span id="register-stat-technique">5</span>
+                                    <button onclick="adjustRegisterStat('technique', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="signature-move-select">
+                                <label>Signature Move (Kimarite)</label>
+                                <select id="register-signature-move">
+                                    <option value="">-- Select Your Finishing Move --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-buttons">
+                        <button class="back-button" onclick="goToStep2()">Back</button>
+                        <button class="cta-button" id="complete-registration" onclick="completeRegistration()">Complete Registration</button>
+                    </div>
+                </div>
+
+                <!-- Registration Complete -->
+                <div id="register-complete" class="register-step">
+                    <div class="registration-success">
+                        <h2>Registration Complete!</h2>
+                        <div class="success-rikishi">
+                            <img id="success-wrestler-image" src="" alt="Your Rikishi">
+                            <h3 id="success-rikishi-name"></h3>
+                            <p id="success-wrestler-rank"></p>
+                        </div>
+                        <p>Your rikishi is ready for battle. Proceed to the tournament when all participants have registered.</p>
+                        <button class="cta-button" onclick="goToTournament()">Enter Tournament</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

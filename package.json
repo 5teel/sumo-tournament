@@ -1,0 +1,11 @@
+{
+  "name": "sumo-tournament",
+  "version": "1.0.0",
+  "description": "Interactive Sumo Tournament Game",
+  "scripts": {
+    "start": "npx serve -s . -l $PORT"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

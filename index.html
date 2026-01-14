@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumo Knowledge Share & Tournament</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">相撲 Sumo</h1>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#history" class="nav-link">History</a></li>
+                <li><a href="#structure" class="nav-link">Structure</a></li>
+                <li><a href="#culture" class="nav-link">Culture</a></li>
+                <li><a href="#tournament" class="nav-link">Tournament</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="section active">
+        <div class="container">
+            <h1 class="title">Welcome to the World of Sumo</h1>
+            <p class="subtitle">Discover the ancient art, tradition, and excitement of Japan's national sport</p>
+            <div class="hero-content">
+                <img src="images/sumo-hero.jpg" alt="Sumo wrestlers in ring" class="hero-image" onerror="this.onerror=null; this.style.display='none';">
+                <div class="intro-text">
+                    <h2>Join Our Mock Tournament!</h2>
+                    <p>Experience the thrill of sumo competition. Select your rikishi (wrestler), face off against other participants, and learn about this fascinating sport through interactive competition.</p>
+                    <button class="cta-button" onclick="showSection('tournament')">Join Tournament</button>
+                </div>
+            </div>
+
+            <div class="video-section">
+                <h2>Learn About Sumo</h2>
+                <p>Watch this video to understand the basics of sumo wrestling</p>
+                <div class="video-wrapper">
+                    <a href="https://www.youtube.com/watch?v=m5q5pps_C7M" target="_blank" class="video-thumbnail-link">
+                        <img src="https://img.youtube.com/vi/m5q5pps_C7M/maxresdefault.jpg" alt="Sumo Explained Video" class="video-thumbnail">
+                        <div class="play-button">
+                            <svg viewBox="0 0 68 48" width="68" height="48">
+                                <path class="play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path>
+                                <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <p class="video-note">Click to watch on YouTube</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="history" class="section">
+        <div class="container">
+            <h2 class="section-title">The History of Sumo</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Ancient Times</div>
+                    <div class="timeline-content">
+                        <h3>Origins in Shinto Rituals</h3>
+                        <p>Sumo originated over 1,500 years ago as a Shinto ritual to entertain the gods and ensure a bountiful harvest. Early matches were performed at shrines and imperial courts.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Nara Period (710-794)</div>
+                    <div class="timeline-content">
+                        <h3>Imperial Court Sport</h3>
+                        <p>Sumo became a spectator sport at the imperial court. Annual sumo festivals were held, and the best wrestlers from across Japan were brought to compete.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Edo Period (1603-1868)</div>
+                    <div class="timeline-content">
+                        <h3>Professional Sumo Emerges</h3>
+                        <p>Sumo evolved into a professional sport with organized tournaments, rankings, and stable systems. The modern ring (dohyo) and many current rules were established.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Modern Era</div>
+                    <div class="timeline-content">
+                        <h3>International Recognition</h3>
+                        <p>While maintaining its traditional elements, sumo has gained international attention with wrestlers from Mongolia, Eastern Europe, and other countries achieving the highest ranks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="structure" class="section">
+        <div class="container">
+            <h2 class="section-title">Structure of Professional Sumo</h2>
+            <div class="structure-grid">
+                <div class="structure-card">
+                    <h3>Rankings (Banzuke)</h3>
+                    <div class="rank-pyramid">
+                        <div class="rank-level yokozuna">Yokozuna (Grand Champion)</div>
+                        <div class="rank-level ozeki">Ozeki (Champion)</div>
+                        <div class="rank-level sekiwake">Sekiwake & Komusubi (Junior Champions)</div>
+                        <div class="rank-level maegashira">Maegashira (Rank & File)</div>
+                        <div class="rank-level juryo">Juryo (Second Division)</div>
+                        <div class="rank-level lower">Lower Divisions</div>
+                    </div>
+                    <p>Wrestlers are promoted or demoted based on their tournament performance.</p>
+                </div>
+                <div class="structure-card">
+                    <h3>Tournament Format</h3>
+                    <ul class="tournament-info">
+                        <li>6 Grand Tournaments (Basho) per year</li>
+                        <li>15 days each tournament</li>
+                        <li>One match per day for each wrestler</li>
+                        <li>Winning record (8+ wins) = promotion</li>
+                        <li>Losing record (7- wins) = demotion</li>
+                    </ul>
+                </div>
+                <div class="structure-card">
+                    <h3>The Dohyo (Ring)</h3>
+                    <img src="images/dohyo-diagram.jpg" alt="Sumo ring diagram" class="dohyo-image" onerror="this.onerror=null; this.style.display='none';">
+                    <p>The clay ring is 4.55 meters in diameter, elevated on a platform. The first to step out or touch the ground with anything but feet loses.</p>
+                </div>
+                <div class="structure-card">
+                    <h3>Stable Life (Heya)</h3>
+                    <p>Wrestlers live and train in stables under a stablemaster. Daily life includes:</p>
+                    <ul>
+                        <li>Morning training from 6 AM</li>
+                        <li>Chanko-nabe (traditional stew) meals</li>
+                        <li>Afternoon naps for recovery</li>
+                        <li>Strict hierarchy and traditions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="culture" class="section">
+        <div class="container">
+            <h2 class="section-title">Cultural Elements of Sumo</h2>
+            <div class="culture-grid">
+                <div class="culture-item">
+                    <h3>Rituals & Ceremonies</h3>
+                    <div class="ritual-list">
+                        <div class="ritual">
+                            <h4>Salt Throwing (Shio-maki)</h4>
+                            <p>Purifies the ring and wards off evil spirits. Each wrestler throws salt before their match.</p>
+                        </div>
+                        <div class="ritual">
+                            <h4>Ring-Entering Ceremony (Dohyo-iri)</h4>
+                            <p>Yokozuna perform special ceremonies wearing ornate rope belts (tsuna) weighing up to 35kg.</p>
+                        </div>
+                        <div class="ritual">
+                            <h4>Water Ritual (Chikara-mizu)</h4>
+                            <p>Wrestlers rinse their mouths with "power water" from the previous winner.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="culture-item">
+                    <h3>Appearance & Attire</h3>
+                    <div class="attire-info">
+                        <div class="attire-item">
+                            <h4>Mawashi (Belt)</h4>
+                            <p>The silk belt worn during matches. Different colors for practice and competition.</p>
+                        </div>
+                        <div class="attire-item">
+                            <h4>Chonmage (Topknot)</h4>
+                            <p>Traditional hairstyle required for all wrestlers, styled with special oil.</p>
+                        </div>
+                        <div class="attire-item">
+                            <h4>Kesho-mawashi</h4>
+                            <p>Ornate ceremonial aprons worn during ring-entering ceremonies, often costing thousands of dollars.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="culture-item">
+                    <h3>Unique Traditions</h3>
+                    <ul class="tradition-list">
+                        <li><strong>No Weight Classes:</strong> David vs Goliath matches are common</li>
+                        <li><strong>Gyoji (Referees):</strong> Wear traditional costumes and carry war fans</li>
+                        <li><strong>Throwing of Cushions:</strong> Audience throws cushions when an underdog defeats a yokozuna</li>
+                        <li><strong>Prize Money:</strong> Sponsors place envelopes on the ring, winner takes all</li>
+                        <li><strong>No Retirement Ceremony:</strong> Only undefeated wrestlers get a hair-cutting ceremony</li>
+                    </ul>
+                </div>
+                <div class="culture-item">
+                    <h3>Modern Cultural Impact</h3>
+                    <p>Sumo influences Japanese society beyond the ring:</p>
+                    <ul>
+                        <li>Chanko-nabe restaurants run by retired wrestlers</li>
+                        <li>Sumo terminology in everyday language</li>
+                        <li>Celebrity status for top wrestlers</li>
+                        <li>Traditional values in modern society</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tournament" class="section">
+        <div class="container">
+            <h2 class="section-title">Mock Sumo Tournament</h2>
+            <div class="tournament-container">
+                <div id="registration-view" class="tournament-view active">
+                    <h3>Register for the Tournament</h3>
+                    <form id="registration-form" class="registration-form">
+                        <input type="text" id="participant-name" placeholder="Your Name" required>
+                        <input type="email" id="participant-email" placeholder="Your Email" required>
+                        <button type="submit" class="submit-btn">Register</button>
+                    </form>
+                    <div class="registered-participants">
+                        <h4>Registered Participants:</h4>
+                        <ul id="participant-list"></ul>
+                    </div>
+
+                    <div class="tournament-settings" style="margin-top: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 10px;">
+                        <h4 style="color: #333; margin-bottom: 1rem;">Tournament Settings</h4>
+                        <div class="setting-row" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <label for="rounds-to-win" style="flex: 1;">Wins needed for Emperor's Cup:</label>
+                            <select id="rounds-to-win" style="padding: 0.5rem; border-radius: 5px; border: 1px solid #ddd;">
+                                <option value="1">1 Win (Quick)</option>
+                                <option value="2">2 Wins</option>
+                                <option value="3" selected>3 Wins (Standard)</option>
+                                <option value="5">5 Wins</option>
+                                <option value="0">Round Robin (All vs All)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="test-mode-section" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px dashed #ddd;">
+                        <h4 style="color: #667eea;">Developer Test Mode</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Skip setup and jump straight to testing</p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button id="test-mode-btn" class="submit-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">Full Test (From Lobby)</button>
+                            <button id="test-battle-btn" class="submit-btn" style="background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);">Skip to Battle</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-section" style="margin-top: 2rem; padding-top: 2rem; border-top: 2px dashed #ddd;">
+                        <h4 style="color: #e74c3c;">Admin Controls</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Manage wrestler avatars and tournament imagery</p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button id="admin-images-btn" class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">Upload Wrestler Avatars</button>
+                            <button id="admin-scenes-btn" class="submit-btn" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">Upload Scene Images</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin: Wrestler Avatars Upload -->
+                <div id="admin-avatars-view" class="tournament-view">
+                    <div class="admin-page">
+                        <div class="admin-header">
+                            <h2>Wrestler Avatar Management</h2>
+                            <p>Click on any wrestler to upload their avatar image (anime style recommended)</p>
+                        </div>
+                        <div class="admin-wrestler-grid" id="admin-wrestler-grid">
+                            <!-- Generated by JavaScript -->
+                        </div>
+                        <div class="admin-actions">
+                            <button id="admin-clear-wrestlers" class="submit-btn" style="background: #ff6b6b;">Clear All Wrestler Images</button>
+                            <button id="admin-back-from-avatars" class="submit-btn">Back to Registration</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin: Scene Images Upload -->
+                <div id="admin-scenes-view" class="tournament-view">
+                    <div class="admin-page">
+                        <div class="admin-header">
+                            <h2>Scene Image Management</h2>
+                            <p>Upload celebration and tournament scene images</p>
+                        </div>
+                        <div class="admin-scenes-grid">
+                            <div class="admin-scene-card" data-scene="emperorsCup">
+                                <div class="scene-preview">
+                                    <img id="admin-scene-emperorsCup" src="" alt="Emperor's Cup">
+                                </div>
+                                <h4>Emperor's Cup Ceremony</h4>
+                                <p>Winner receiving the prestigious Emperor's Cup</p>
+                                <button class="upload-scene-btn submit-btn">Upload Image</button>
+                            </div>
+                            <div class="admin-scene-card" data-scene="giantSnapper">
+                                <div class="scene-preview">
+                                    <img id="admin-scene-giantSnapper" src="" alt="Giant Snapper">
+                                </div>
+                                <h4>Giant Snapper (Tai)</h4>
+                                <p>Traditional gift of a large sea bream fish</p>
+                                <button class="upload-scene-btn submit-btn">Upload Image</button>
+                            </div>
+                            <div class="admin-scene-card" data-scene="limousine">
+                                <div class="scene-preview">
+                                    <img id="admin-scene-limousine" src="" alt="Victory Parade">
+                                </div>
+                                <h4>Victory Parade</h4>
+                                <p>Champion in white convertible with fans</p>
+                                <button class="upload-scene-btn submit-btn">Upload Image</button>
+                            </div>
+                            <div class="admin-scene-card" data-scene="champion">
+                                <div class="scene-preview">
+                                    <img id="admin-scene-champion" src="" alt="Champion Pose">
+                                </div>
+                                <h4>Champion Victory Pose</h4>
+                                <p>Triumphant champion celebration</p>
+                                <button class="upload-scene-btn submit-btn">Upload Image</button>
+                            </div>
+                            <div class="admin-scene-card" data-scene="dohyo">
+                                <div class="scene-preview">
+                                    <img id="admin-scene-dohyo" src="" alt="Dohyo Ring">
+                                </div>
+                                <h4>Dohyo (Ring)</h4>
+                                <p>The sacred sumo wrestling ring</p>
+                                <button class="upload-scene-btn submit-btn">Upload Image</button>
+                            </div>
+                            <div class="admin-scene-card" data-scene="tournament">
+                                <div class="scene-preview">
+                                    <img id="admin-scene-tournament" src="" alt="Tournament">
+                                </div>
+                                <h4>Tournament Arena</h4>
+                                <p>Ryogoku Kokugikan arena view</p>
+                                <button class="upload-scene-btn submit-btn">Upload Image</button>
+                            </div>
+                        </div>
+                        <div class="admin-actions">
+                            <button id="admin-clear-scenes" class="submit-btn" style="background: #ff6b6b;">Clear All Scene Images</button>
+                            <button id="admin-back-from-scenes" class="submit-btn">Back to Registration</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="selection-view" class="tournament-view">
+                    <h3>Select Your Rikishi</h3>
+                    <div class="wrestler-grid" id="wrestler-grid">
+                        <!-- Wrestlers will be dynamically loaded here -->
+                    </div>
+                    <button id="confirm-selection" class="submit-btn" disabled>Confirm Selection</button>
+                </div>
+
+                <div id="character-builder-view" class="tournament-view">
+                    <h3>Build Your Wrestler</h3>
+                    <div class="character-builder">
+                        <div class="selected-wrestler-display">
+                            <div class="avatar-upload-container" id="avatar-upload-container">
+                                <img id="builder-wrestler-image" src="" alt="Selected wrestler" class="builder-image uploadable">
+                                <div class="upload-hint">Click to upload custom avatar</div>
+                            </div>
+                            <div class="custom-name-input">
+                                <label for="custom-wrestler-name">Custom Name:</label>
+                                <input type="text" id="custom-wrestler-name" placeholder="Enter shikona (ring name)">
+                            </div>
+                            <h4 id="builder-wrestler-name"></h4>
+                            <p id="builder-wrestler-rank"></p>
+                        </div>
+
+                        <div class="stat-allocation">
+                            <div class="points-remaining">
+                                <span>Points Remaining: </span>
+                                <span id="points-left" class="points-number">10</span>
+                            </div>
+
+                            <div class="stat-row">
+                                <label>Height</label>
+                                <div class="stat-control">
+                                    <button class="stat-btn minus" data-stat="height">-</button>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" id="height-fill"></div>
+                                    </div>
+                                    <span class="stat-value" id="height-value">5</span>
+                                    <button class="stat-btn plus" data-stat="height">+</button>
+                                </div>
+                                <span class="stat-desc">Reach advantage & balance</span>
+                            </div>
+
+                            <div class="stat-row">
+                                <label>Weight</label>
+                                <div class="stat-control">
+                                    <button class="stat-btn minus" data-stat="weight">-</button>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" id="weight-fill"></div>
+                                    </div>
+                                    <span class="stat-value" id="weight-value">5</span>
+                                    <button class="stat-btn plus" data-stat="weight">+</button>
+                                </div>
+                                <span class="stat-desc">Pushing power & stability</span>
+                            </div>
+
+                            <div class="stat-row">
+                                <label>Speed</label>
+                                <div class="stat-control">
+                                    <button class="stat-btn minus" data-stat="speed">-</button>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" id="speed-fill"></div>
+                                    </div>
+                                    <span class="stat-value" id="speed-value">5</span>
+                                    <button class="stat-btn plus" data-stat="speed">+</button>
+                                </div>
+                                <span class="stat-desc">Quick reactions & agility</span>
+                            </div>
+
+                            <div class="stat-row">
+                                <label>Technique</label>
+                                <div class="stat-control">
+                                    <button class="stat-btn minus" data-stat="technique">-</button>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" id="technique-fill"></div>
+                                    </div>
+                                    <span class="stat-value" id="technique-value">5</span>
+                                    <button class="stat-btn plus" data-stat="technique">+</button>
+                                </div>
+                                <span class="stat-desc">Skill with winning moves</span>
+                            </div>
+                        </div>
+
+                        <div class="favourite-move-section">
+                            <h4>Choose Your Signature Move (Kimarite)</h4>
+                            <div class="move-grid" id="move-grid">
+                                <!-- Moves loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <button id="confirm-character" class="submit-btn" disabled>Confirm Character</button>
+                    </div>
+                </div>
+
+                <!-- Waiting Lobby with Dohyo -->
+                <div id="lobby-view" class="tournament-view">
+                    <div class="lobby-container">
+                        <h3 class="lobby-title">The Dohyo Awaits...</h3>
+                        <p class="lobby-subtitle">Waiting for all rikishi to enter the arena</p>
+
+                        <div class="dohyo-arena">
+                            <div class="dohyo-ring">
+                                <div class="dohyo-circle">
+                                    <div class="shikiri-lines"></div>
+                                    <div class="dohyo-center"></div>
+                                </div>
+                                <div class="tawara"></div>
+                            </div>
+                            <div class="dohyo-platform"></div>
+                        </div>
+
+                        <div class="lobby-status">
+                            <div class="entered-count">
+                                <span id="entered-count">0</span> / <span id="total-count">0</span> Rikishi Ready
+                            </div>
+                            <div class="entered-wrestlers" id="entered-wrestlers">
+                                <!-- Entered wrestler indicators will appear here -->
+                            </div>
+                        </div>
+
+                        <button id="enter-dohyo-btn" class="submit-btn enter-btn">Enter the Dohyo</button>
+                    </div>
+                </div>
+
+                <!-- Entrance Announcement -->
+                <div id="entrance-view" class="tournament-view">
+                    <div class="entrance-container">
+                        <div class="entrance-backdrop"></div>
+                        <div class="entrance-content">
+                            <div class="entrance-wrestler-image-container">
+                                <img id="entrance-wrestler-image" src="" alt="Wrestler" class="entrance-wrestler-image">
+                            </div>
+                            <h2 class="entrance-announcement" id="entrance-announcement"></h2>
+                            <h3 class="entrance-wrestler-name" id="entrance-wrestler-name"></h3>
+                            <p class="entrance-rank" id="entrance-rank"></p>
+
+                            <div class="entrance-stats" id="entrance-stats">
+                                <div class="entrance-stat">
+                                    <span class="stat-label">Height</span>
+                                    <div class="stat-bar-mini"><div class="stat-fill-mini" id="entrance-height"></div></div>
+                                    <span class="stat-num" id="entrance-height-num"></span>
+                                </div>
+                                <div class="entrance-stat">
+                                    <span class="stat-label">Weight</span>
+                                    <div class="stat-bar-mini"><div class="stat-fill-mini" id="entrance-weight"></div></div>
+                                    <span class="stat-num" id="entrance-weight-num"></span>
+                                </div>
+                                <div class="entrance-stat">
+                                    <span class="stat-label">Speed</span>
+                                    <div class="stat-bar-mini"><div class="stat-fill-mini" id="entrance-speed"></div></div>
+                                    <span class="stat-num" id="entrance-speed-num"></span>
+                                </div>
+                                <div class="entrance-stat">
+                                    <span class="stat-label">Technique</span>
+                                    <div class="stat-bar-mini"><div class="stat-fill-mini" id="entrance-technique"></div></div>
+                                    <span class="stat-num" id="entrance-technique-num"></span>
+                                </div>
+                            </div>
+
+                            <div class="entrance-move">
+                                <span>Signature Move:</span>
+                                <strong id="entrance-move-name"></strong>
+                                <span id="entrance-move-japanese"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- East vs West Matchup Display -->
+                <div id="matchup-view" class="tournament-view">
+                    <div class="matchup-container">
+                        <h2 class="matchup-title">
+                            <span class="round-number" id="round-number">Round 1</span>
+                            <span class="round-subtitle">Today's Bouts</span>
+                        </h2>
+
+                        <div class="matchup-header">
+                            <div class="side-label east">East (東)</div>
+                            <div class="vs-divider"></div>
+                            <div class="side-label west">West (西)</div>
+                        </div>
+
+                        <div class="matchup-list" id="matchup-list">
+                            <!-- Matchups will be generated here -->
+                        </div>
+
+                        <button id="start-matches-btn" class="submit-btn">Begin the Bouts!</button>
+                    </div>
+                </div>
+
+                <!-- Multi-Phase Battle View -->
+                <div id="battle-view" class="tournament-view">
+                    <div class="battle-container">
+                        <div class="battle-header">
+                            <span class="bout-number" id="bout-number">Bout 1</span>
+                            <span class="phase-indicator" id="phase-indicator">Preparation</span>
+                        </div>
+
+                        <!-- Wrestler Status Bar (Always Visible) -->
+                        <div class="battle-status-bar">
+                            <div class="status-wrestler east">
+                                <img id="status-east-image" src="" alt="" class="status-image">
+                                <div class="status-info">
+                                    <span class="status-name" id="status-east-name"></span>
+                                    <span class="status-player" id="status-east-player"></span>
+                                </div>
+                                <div class="status-choice" id="status-east-choice">Choosing...</div>
+                            </div>
+                            <div class="status-vs">VS</div>
+                            <div class="status-wrestler west">
+                                <div class="status-choice" id="status-west-choice">Choosing...</div>
+                                <div class="status-info">
+                                    <span class="status-name" id="status-west-name"></span>
+                                    <span class="status-player" id="status-west-player"></span>
+                                </div>
+                                <img id="status-west-image" src="" alt="" class="status-image">
+                            </div>
+                        </div>
+
+                        <!-- Seated Wrestlers (Waiting for their turn) -->
+                        <div class="seated-wrestlers-container">
+                            <h5 class="seated-title">Waiting Rikishi</h5>
+                            <div class="seated-wrestlers" id="seated-wrestlers">
+                                <!-- Seated wrestlers will be generated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Battle Stats Display -->
+                        <div class="battle-stats-display">
+                            <div class="stats-column east" id="east-battle-stats">
+                                <h4>Battle Stats</h4>
+                                <div class="battle-stat-row"><span>Spirit</span><span id="east-spirit">0</span></div>
+                                <div class="battle-stat-row"><span>Focus</span><span id="east-focus">0</span></div>
+                                <div class="battle-stat-row"><span>Intimidation</span><span id="east-intimidation">0</span></div>
+                                <div class="battle-stat-row"><span>Crowd Support</span><span id="east-crowd">0</span></div>
+                                <div class="battle-stat-row"><span>Momentum</span><span id="east-momentum">0</span></div>
+                            </div>
+                            <div class="stats-column west" id="west-battle-stats">
+                                <h4>Battle Stats</h4>
+                                <div class="battle-stat-row"><span>Spirit</span><span id="west-spirit">0</span></div>
+                                <div class="battle-stat-row"><span>Focus</span><span id="west-focus">0</span></div>
+                                <div class="battle-stat-row"><span>Intimidation</span><span id="west-intimidation">0</span></div>
+                                <div class="battle-stat-row"><span>Crowd Support</span><span id="west-crowd">0</span></div>
+                                <div class="battle-stat-row"><span>Momentum</span><span id="west-momentum">0</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Phase Content Area -->
+                        <div class="phase-content" id="phase-content">
+                            <!-- Phase 1: Salt Throwing -->
+                            <div class="phase-panel" id="phase-salt" style="display: none;">
+                                <h3 class="phase-title">Purify the Dohyo</h3>
+                                <p class="phase-description">Choose how much salt to throw. This is a sacred ritual!</p>
+                                <div class="choice-grid">
+                                    <div class="choice-card" data-choice="little">
+                                        <div class="choice-icon">🧂</div>
+                                        <h4>Little Salt</h4>
+                                        <p>A measured, focused approach</p>
+                                        <div class="choice-bonus">+Focus</div>
+                                    </div>
+                                    <div class="choice-card" data-choice="lot">
+                                        <div class="choice-icon">🧂🧂🧂</div>
+                                        <h4>Lots of Salt</h4>
+                                        <p>Show your fighting spirit!</p>
+                                        <div class="choice-bonus">+Spirit</div>
+                                    </div>
+                                </div>
+                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                            </div>
+
+                            <!-- Phase 2: Display/Intimidation -->
+                            <div class="phase-panel" id="phase-display" style="display: none;">
+                                <h3 class="phase-title">Intimidation Display</h3>
+                                <p class="phase-description">How will you psych out your opponent?</p>
+                                <div class="choice-grid">
+                                    <div class="choice-card" data-choice="mawashi">
+                                        <div class="choice-icon">👋</div>
+                                        <h4>Slap Mawashi</h4>
+                                        <p>Smack your belt aggressively</p>
+                                        <div class="choice-bonus">+Intimidation</div>
+                                    </div>
+                                    <div class="choice-card" data-choice="auraPose">
+                                        <div class="choice-icon">✨</div>
+                                        <h4>Aura-Worthy Pose</h4>
+                                        <p>Strike a commanding pose</p>
+                                        <div class="choice-bonus">+Crowd Support</div>
+                                    </div>
+                                </div>
+                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                            </div>
+
+                            <!-- Phase 3: Tachiai -->
+                            <div class="phase-panel" id="phase-tachiai" style="display: none;">
+                                <h3 class="phase-title">The Tachiai!</h3>
+                                <p class="phase-description">Choose your initial clash strategy</p>
+                                <div class="choice-grid three-col">
+                                    <div class="choice-card" data-choice="hard">
+                                        <div class="choice-icon">💥</div>
+                                        <h4>Hard Tachiai</h4>
+                                        <p>Powerful forward charge</p>
+                                        <div class="choice-bonus">Beats Henka</div>
+                                    </div>
+                                    <div class="choice-card" data-choice="soft">
+                                        <div class="choice-icon">🎯</div>
+                                        <h4>Soft Tachiai</h4>
+                                        <p>Measured initial clash</p>
+                                        <div class="choice-bonus">Balanced</div>
+                                    </div>
+                                    <div class="choice-card shameful" data-choice="henka">
+                                        <div class="choice-icon">↩️</div>
+                                        <h4>Henka</h4>
+                                        <p>Sidestep (shameful!)</p>
+                                        <div class="choice-bonus warning">Risky! -Spirit</div>
+                                    </div>
+                                </div>
+                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                            </div>
+
+                            <!-- Phase 4: Battle Technique -->
+                            <div class="phase-panel" id="phase-technique" style="display: none;">
+                                <h3 class="phase-title">Battle Technique</h3>
+                                <p class="phase-description">How will you attack?</p>
+                                <div class="choice-grid four-col">
+                                    <div class="choice-card" data-choice="grip">
+                                        <div class="choice-icon">🤝</div>
+                                        <h4>Belt Grip</h4>
+                                        <p>Secure the mawashi</p>
+                                        <div class="choice-bonus">+Throw Power</div>
+                                    </div>
+                                    <div class="choice-card" data-choice="tsuppari">
+                                        <div class="choice-icon">👐</div>
+                                        <h4>Tsuppari</h4>
+                                        <p>Palm thrusts</p>
+                                        <div class="choice-bonus">+Strike Power</div>
+                                    </div>
+                                    <div class="choice-card" data-choice="push">
+                                        <div class="choice-icon">➡️</div>
+                                        <h4>Oshi</h4>
+                                        <p>Forward pushing</p>
+                                        <div class="choice-bonus">+Push Power</div>
+                                    </div>
+                                    <div class="choice-card" data-choice="pull">
+                                        <div class="choice-icon">↩️</div>
+                                        <h4>Hiki</h4>
+                                        <p>Pulling technique</p>
+                                        <div class="choice-bonus">+Balance</div>
+                                    </div>
+                                </div>
+                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                            </div>
+
+                            <!-- Phase 5: Finishing Move -->
+                            <div class="phase-panel" id="phase-finish" style="display: none;">
+                                <h3 class="phase-title">Execute Finishing Move!</h3>
+                                <p class="phase-description">Your signature move: <strong id="your-signature-move"></strong></p>
+                                <div class="finishing-display">
+                                    <div class="finish-wrestler east">
+                                        <h4 id="finish-east-name"></h4>
+                                        <div class="finish-chance">
+                                            <span>Success Chance:</span>
+                                            <span class="chance-value" id="finish-east-chance">50%</span>
+                                        </div>
+                                        <div class="finish-bonuses" id="finish-east-bonuses"></div>
+                                    </div>
+                                    <div class="finish-vs">
+                                        <button id="execute-finish-btn" class="fight-button">EXECUTE!</button>
+                                    </div>
+                                    <div class="finish-wrestler west">
+                                        <h4 id="finish-west-name"></h4>
+                                        <div class="finish-chance">
+                                            <span>Success Chance:</span>
+                                            <span class="chance-value" id="finish-west-chance">50%</span>
+                                        </div>
+                                        <div class="finish-bonuses" id="finish-west-bonuses"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Phase Result -->
+                            <div class="phase-panel" id="phase-result" style="display: none;">
+                                <div class="phase-result-content">
+                                    <h3 id="phase-result-title"></h3>
+                                    <div class="result-comparison">
+                                        <div class="result-side east">
+                                            <span class="result-choice" id="result-east-choice"></span>
+                                        </div>
+                                        <div class="result-outcome" id="result-outcome"></div>
+                                        <div class="result-side west">
+                                            <span class="result-choice" id="result-west-choice"></span>
+                                        </div>
+                                    </div>
+                                    <p class="result-narrative" id="result-narrative"></p>
+                                    <button id="next-phase-btn" class="submit-btn">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Final Battle Result -->
+                        <div class="battle-result" id="battle-result" style="display: none;">
+                            <div class="winner-announcement" id="winner-announcement"></div>
+                            <div class="winning-move" id="winning-move-display"></div>
+                            <div class="battle-summary" id="battle-summary"></div>
+                            <button id="next-bout-btn" class="submit-btn">Next Bout</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Standings (shown during tournament) -->
+                <div id="standings-view" class="tournament-view">
+                    <div class="standings-container">
+                        <h2 class="standings-title">Tournament Standings</h2>
+                        <div class="standings-table" id="live-standings">
+                            <!-- Live standings will be generated here -->
+                        </div>
+                        <div class="upcoming-bouts">
+                            <h4>Upcoming Bouts</h4>
+                            <div id="upcoming-bouts-list"></div>
+                        </div>
+                        <button id="continue-tournament-btn" class="submit-btn">Continue Tournament</button>
+                    </div>
+                </div>
+
+                <!-- Victory Celebration -->
+                <div id="celebration-view" class="tournament-view">
+                    <div class="celebration-container">
+                        <div class="celebration-header">
+                            <h1>YUSHO!</h1>
+                            <h2>Tournament Champion</h2>
+                        </div>
+
+                        <div class="celebration-scenes">
+                            <div class="celebration-scene" id="scene-cup">
+                                <div class="scene-image-container uploadable-scene" data-scene="emperorsCup">
+                                    <img id="celebration-cup-img" src="" alt="Emperor's Cup ceremony">
+                                    <div class="upload-hint">Click to upload</div>
+                                </div>
+                                <p>Receiving the Emperor's Cup</p>
+                            </div>
+
+                            <div class="celebration-scene" id="scene-snapper">
+                                <div class="scene-image-container uploadable-scene" data-scene="giantSnapper">
+                                    <img id="celebration-snapper-img" src="" alt="Giant Snapper">
+                                    <div class="upload-hint">Click to upload</div>
+                                </div>
+                                <p>The Giant Snapper (Tai)</p>
+                            </div>
+
+                            <div class="celebration-scene" id="scene-parade">
+                                <div class="scene-image-container uploadable-scene" data-scene="limousine">
+                                    <img id="celebration-parade-img" src="" alt="Victory Parade">
+                                    <div class="upload-hint">Click to upload</div>
+                                </div>
+                                <p>Victory Parade!</p>
+                            </div>
+                        </div>
+
+                        <div class="champion-info">
+                            <img id="champion-avatar" src="" alt="Champion" class="champion-avatar">
+                            <h3 id="champion-name"></h3>
+                            <p id="champion-record"></p>
+                            <p id="champion-move"></p>
+                        </div>
+
+                        <button id="finish-celebration-btn" class="submit-btn">View Final Standings</button>
+                    </div>
+                </div>
+
+                <!-- Tournament Results -->
+                <div id="results-view" class="tournament-view">
+                    <div class="results-container">
+                        <h2 class="results-title">Tournament Complete!</h2>
+                        <div id="final-standings"></div>
+                        <button id="new-tournament-btn" class="submit-btn">Start New Tournament</button>
+                    </div>
+                </div>
+
+                <div id="bracket-view" class="tournament-view">
+                    <h3>Tournament Bracket</h3>
+                    <div id="tournament-bracket" class="bracket-container">
+                        <!-- Bracket will be dynamically generated -->
+                    </div>
+                </div>
+
+                <div id="match-view" class="tournament-view">
+                    <h3>Match in Progress</h3>
+                    <div class="match-display">
+                        <div class="wrestler-info left">
+                            <h4 id="wrestler1-name"></h4>
+                            <p id="wrestler1-participant"></p>
+                        </div>
+                        <div class="video-container">
+                            <video id="match-video" controls>
+                                <source src="" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div class="wrestler-info right">
+                            <h4 id="wrestler2-name"></h4>
+                            <p id="wrestler2-participant"></p>
+                        </div>
+                    </div>
+                    <button id="next-match" class="submit-btn" style="display: none;">Next Match</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Manager Modal -->
+    <div id="image-manager-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="close-image-modal">&times;</span>
+            <h2>Image Manager</h2>
+            <p>Upload anime-style images for the tournament. Images are saved in your browser.</p>
+
+            <div class="image-manager-sections">
+                <div class="image-section">
+                    <h3>Wrestler Avatars</h3>
+                    <div class="image-grid" id="wrestler-images-grid">
+                        <!-- Wrestler image slots generated by JS -->
+                    </div>
+                </div>
+
+                <div class="image-section">
+                    <h3>Celebration Images</h3>
+                    <div class="image-grid celebration-grid">
+                        <div class="image-slot" data-category="celebration" data-key="emperorsCup">
+                            <img id="img-emperorsCup" src="" alt="Emperor's Cup">
+                            <span>Emperor's Cup</span>
+                        </div>
+                        <div class="image-slot" data-category="celebration" data-key="giantSnapper">
+                            <img id="img-giantSnapper" src="" alt="Giant Snapper">
+                            <span>Giant Snapper</span>
+                        </div>
+                        <div class="image-slot" data-category="celebration" data-key="limousine">
+                            <img id="img-limousine" src="" alt="Limousine Parade">
+                            <span>Limousine Parade</span>
+                        </div>
+                        <div class="image-slot" data-category="celebration" data-key="champion">
+                            <img id="img-champion" src="" alt="Champion Pose">
+                            <span>Champion Pose</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-manager-actions">
+                <button id="clear-all-images" class="submit-btn" style="background: #ff6b6b;">Clear All Images</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="image-manager.js"></script>
+    <script src="battle-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

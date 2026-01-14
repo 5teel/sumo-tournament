@@ -20,33 +20,24 @@
         </div>
     </nav>
 
-    <section id="home" class="section active">
-        <div class="container">
-            <h1 class="title">Welcome to the World of Sumo</h1>
-            <p class="subtitle">Discover the ancient art, tradition, and excitement of Japan's national sport</p>
-            <div class="hero-content">
-                <img src="images/sumo-hero.jpg" alt="Sumo wrestlers in ring" class="hero-image" onerror="this.onerror=null; this.style.display='none';">
-                <div class="intro-text">
-                    <h2>Join Our Mock Tournament!</h2>
-                    <p>Experience the thrill of sumo competition. Select your rikishi (wrestler), face off against other participants, and learn about this fascinating sport through interactive competition.</p>
-                    <button class="cta-button" onclick="showSection('tournament')">Join Tournament</button>
-                </div>
+    <section id="home" class="section active home-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-container">
+            <h1 class="hero-title">Welcome to the World of Sumo</h1>
+            <p class="hero-subtitle">Discover the ancient art, tradition, and excitement of Japan's national sport</p>
+
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/m5q5pps_C7M?rel=0"
+                    title="Sumo Explained"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
             </div>
 
-            <div class="video-section">
-                <h2>Learn About Sumo</h2>
-                <p>Watch this video to understand the basics of sumo wrestling</p>
-                <div class="video-wrapper">
-                    <iframe
-                        src="https://www.youtube.com/embed/m5q5pps_C7M?rel=0"
-                        title="Sumo Explained"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
+            <button class="cta-button" onclick="showSection('tournament')">Join Tournament</button>
         </div>
     </section>
 

@@ -551,6 +551,13 @@ function showTournamentView(viewName) {
     document.querySelectorAll('.tournament-view').forEach(view => view.classList.remove('active'));
     const targetView = document.getElementById(`${viewName}-view`);
     if (targetView) targetView.classList.add('active');
+
+    // Toggle battle-active mode for fullscreen battle
+    if (viewName === 'battle') {
+        document.body.classList.add('battle-active');
+    } else {
+        document.body.classList.remove('battle-active');
+    }
 }
 
 // ==========================================

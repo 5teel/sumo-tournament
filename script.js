@@ -378,10 +378,21 @@ function adjustRegisterStat(stat, delta) {
     updateRegisterStatsDisplay();
 }
 
+// Convert stat points to real measurements
+function statToHeight(stat) {
+    // Minimum 170cm, each point adds 3cm
+    return 170 + ((stat - 1) * 3);
+}
+
+function statToWeight(stat) {
+    // Minimum 110kg, each point adds 8kg
+    return 110 + ((stat - 1) * 8);
+}
+
 function updateRegisterStatsDisplay() {
     document.getElementById('register-points').textContent = registerPointsRemaining;
-    document.getElementById('register-stat-height').textContent = registerStats.height;
-    document.getElementById('register-stat-weight').textContent = registerStats.weight;
+    document.getElementById('register-stat-height').textContent = statToHeight(registerStats.height) + 'cm';
+    document.getElementById('register-stat-weight').textContent = statToWeight(registerStats.weight) + 'kg';
     document.getElementById('register-stat-speed').textContent = registerStats.speed;
     document.getElementById('register-stat-technique').textContent = registerStats.technique;
 }
@@ -666,7 +677,14 @@ function updateStatDisplays() {
     document.getElementById('points-left').textContent = pointsRemaining;
 
     ['height', 'weight', 'speed', 'technique'].forEach(stat => {
-        document.getElementById(`${stat}-value`).textContent = currentStats[stat];
+        let displayValue = currentStats[stat];
+        // Show height in cm and weight in kg
+        if (stat === 'height') {
+            displayValue = statToHeight(currentStats[stat]) + 'cm';
+        } else if (stat === 'weight') {
+            displayValue = statToWeight(currentStats[stat]) + 'kg';
+        }
+        document.getElementById(`${stat}-value`).textContent = displayValue;
         document.getElementById(`${stat}-fill`).style.width = `${(currentStats[stat] / MAX_STAT) * 100}%`;
     });
 

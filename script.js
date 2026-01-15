@@ -22,19 +22,169 @@ const PHASES = ['salt', 'display', 'tachiai', 'technique', 'finish'];
 
 // January 2026 Hatsu Basho - Top 12 Ranked Rikishi
 const wrestlerData = [
-    { id: 1, name: "Hoshoryu", rank: "Yokozuna (East)", image: "hoshoryu.jpg" },
-    { id: 2, name: "Onosato", rank: "Yokozuna (West)", image: "onosato.jpg" },
-    { id: 3, name: "Kotozakura", rank: "Ozeki (East)", image: "kotozakura.jpg" },
-    { id: 4, name: "Aonishiki", rank: "Ozeki (West)", image: "aonishiki.jpg" },
-    { id: 5, name: "Kirishima", rank: "Sekiwake (East)", image: "kirishima.jpg" },
-    { id: 6, name: "Takayasu", rank: "Sekiwake (West)", image: "takayasu.jpg" },
-    { id: 7, name: "Oho", rank: "Komusubi (East)", image: "oho.jpg" },
-    { id: 8, name: "Wakamotoharu", rank: "Komusubi (West)", image: "wakamotoharu.jpg" },
-    { id: 9, name: "Ichiyamamoto", rank: "Maegashira 1 (East)", image: "ichiyamamoto.jpg" },
-    { id: 10, name: "Yoshinofuji", rank: "Maegashira 1 (West)", image: "yoshinofuji.jpg" },
-    { id: 11, name: "Ura", rank: "Maegashira 2 (East)", image: "ura.jpg" },
-    { id: 12, name: "Shodai", rank: "Maegashira 2 (West)", image: "shodai.jpg" }
+    { id: 1, name: "Hoshoryu", rank: "Yokozuna (East)", image: "images/Hoshoryu.jpg" },
+    { id: 2, name: "Onosato", rank: "Yokozuna (West)", image: "images/Onosato.jpg" },
+    { id: 3, name: "Kotozakura", rank: "Ozeki (East)", image: "images/Kotozakura.jpg" },
+    { id: 4, name: "Aonishiki", rank: "Ozeki (West)", image: "images/Aonishiki.jpg" },
+    { id: 5, name: "Kirishima", rank: "Sekiwake (East)", image: "images/Kirishima.jpg" },
+    { id: 6, name: "Takayasu", rank: "Sekiwake (West)", image: "images/Takayasu.webp" },
+    { id: 7, name: "Oho", rank: "Komusubi (East)", image: "images/Oho.jpg" },
+    { id: 8, name: "Wakamotoharu", rank: "Komusubi (West)", image: "images/Wakamotoharu.jpg" },
+    { id: 9, name: "Ichiyamamoto", rank: "Maegashira 1 (East)", image: "images/Ichiyamamoto.jpg" },
+    { id: 10, name: "Yoshinofuji", rank: "Maegashira 1 (West)", image: "images/Yoshinofuji.jpg" },
+    { id: 11, name: "Ura", rank: "Maegashira 2 (East)", image: "images/Ura.jpg" },
+    { id: 12, name: "Shodai", rank: "Maegashira 2 (West)", image: "images/Shodai.jpg" }
 ];
+
+// Tournament tracking
+let currentBasho = null;
+let bashoDay = 1;
+let rikishiMatchesPerDay = {}; // { wrestlerId: { 'YYYY-MM-DD': matchCount } }
+let rikishiWins = {}; // { wrestlerId: totalWins }
+let rikishiLosses = {}; // { wrestlerId: totalLosses }
+
+// Basho schedule (6 tournaments per year)
+const BASHO_SCHEDULE = [
+    { month: 1, name: "Hatsu Basho", location: "Tokyo" },
+    { month: 3, name: "Haru Basho", location: "Osaka" },
+    { month: 5, name: "Natsu Basho", location: "Tokyo" },
+    { month: 7, name: "Nagoya Basho", location: "Nagoya" },
+    { month: 9, name: "Aki Basho", location: "Tokyo" },
+    { month: 11, name: "Kyushu Basho", location: "Fukuoka" }
+];
+
+// ==========================================
+// TOURNAMENT DAY TRACKING SYSTEM
+// ==========================================
+const BASHO_DAYS = 15;
+
+// Get today's date string for tracking
+function getTodayString() {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // YYYY-MM-DD format
+}
+
+// Get current basho based on month
+function getCurrentBasho() {
+    const now = new Date();
+    const month = now.getMonth() + 1; // JS months are 0-indexed
+
+    // Find the current or most recent basho
+    let currentBashoInfo = BASHO_SCHEDULE[0];
+    for (const basho of BASHO_SCHEDULE) {
+        if (month >= basho.month) {
+            currentBashoInfo = basho;
+        }
+    }
+    return currentBashoInfo;
+}
+
+// Initialize tournament tracking from localStorage
+function initTournamentTracking() {
+    const saved = localStorage.getItem('sumo_tournament_tracking');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            rikishiMatchesPerDay = data.matchesPerDay || {};
+            rikishiWins = data.wins || {};
+            rikishiLosses = data.losses || {};
+            bashoDay = data.bashoDay || 1;
+            currentBasho = data.currentBasho || getCurrentBasho();
+        } catch (e) {
+            console.error('Failed to load tournament tracking', e);
+            resetTournamentTracking();
+        }
+    } else {
+        resetTournamentTracking();
+    }
+}
+
+// Save tournament tracking to localStorage
+function saveTournamentTracking() {
+    const data = {
+        matchesPerDay: rikishiMatchesPerDay,
+        wins: rikishiWins,
+        losses: rikishiLosses,
+        bashoDay: bashoDay,
+        currentBasho: currentBasho
+    };
+    localStorage.setItem('sumo_tournament_tracking', JSON.stringify(data));
+}
+
+// Reset tournament tracking for new basho
+function resetTournamentTracking() {
+    rikishiMatchesPerDay = {};
+    rikishiWins = {};
+    rikishiLosses = {};
+    bashoDay = 1;
+    currentBasho = getCurrentBasho();
+    saveTournamentTracking();
+}
+
+// Check if a rikishi can fight today (max 1 match per real day)
+function canRikishiFight(wrestlerId) {
+    const today = getTodayString();
+    if (!rikishiMatchesPerDay[wrestlerId]) {
+        rikishiMatchesPerDay[wrestlerId] = {};
+    }
+    const matchesToday = rikishiMatchesPerDay[wrestlerId][today] || 0;
+    return matchesToday < 1;
+}
+
+// Record a match for a rikishi today
+function recordRikishiMatch(wrestlerId, won) {
+    const today = getTodayString();
+    if (!rikishiMatchesPerDay[wrestlerId]) {
+        rikishiMatchesPerDay[wrestlerId] = {};
+    }
+    rikishiMatchesPerDay[wrestlerId][today] = (rikishiMatchesPerDay[wrestlerId][today] || 0) + 1;
+
+    if (won) {
+        rikishiWins[wrestlerId] = (rikishiWins[wrestlerId] || 0) + 1;
+    } else {
+        rikishiLosses[wrestlerId] = (rikishiLosses[wrestlerId] || 0) + 1;
+    }
+
+    saveTournamentTracking();
+}
+
+// Get rikishi wins for leaderboard
+function getRikishiWins(wrestlerId) {
+    return rikishiWins[wrestlerId] || 0;
+}
+
+// Get rikishi losses for leaderboard
+function getRikishiLosses(wrestlerId) {
+    return rikishiLosses[wrestlerId] || 0;
+}
+
+// Get how many days a rikishi has fought in the current basho
+function getRikishiFightDays(wrestlerId) {
+    if (!rikishiMatchesPerDay[wrestlerId]) return 0;
+    return Object.keys(rikishiMatchesPerDay[wrestlerId]).length;
+}
+
+// Format wins as etching-style tally marks (groups of 5)
+function formatWinsAsTally(wins) {
+    if (wins === 0) return '<span class="tally-empty">-</span>';
+
+    const fullGroups = Math.floor(wins / 5);
+    const remainder = wins % 5;
+    let html = '';
+
+    // Full groups of 5 (with strike through)
+    for (let i = 0; i < fullGroups; i++) {
+        html += '<span class="tally-group complete">||||</span> ';
+    }
+
+    // Remaining tally marks
+    if (remainder > 0) {
+        const marks = '|'.repeat(remainder);
+        html += `<span class="tally-group partial">${marks}</span>`;
+    }
+
+    return html.trim();
+}
 
 const signatureMoves = [
     { id: 1, name: "Yorikiri", japanese: "寄り切り", description: "Force out while holding belt", bonus: "weight", bonusAmount: 2 },
@@ -125,18 +275,28 @@ function resetRegistration() {
     showRegisterStep(1);
 }
 
+function getWrestlerImageSrc(wrestler) {
+    // First check ImageManager for uploaded image (localStorage)
+    if (typeof ImageManager !== 'undefined' && ImageManager.getWrestlerImage) {
+        const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+        if (savedImage) return savedImage;
+    }
+    // Otherwise use the default wrestler image file from the images folder
+    return wrestler.image || placeholderImage;
+}
+
 function initRegisterWrestlerGrid() {
     const grid = document.getElementById('register-wrestler-grid');
     if (!grid) return;
 
     grid.innerHTML = '';
     wrestlerData.forEach(wrestler => {
-        const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+        const imageSrc = getWrestlerImageSrc(wrestler);
         const card = document.createElement('div');
         card.className = 'register-wrestler-card';
         card.dataset.wrestlerId = wrestler.id;
         card.innerHTML = `
-            <img src="${savedImage || placeholderImage}" alt="${wrestler.name}" onerror="this.onerror=null; this.src='${placeholderImage}'">
+            <img src="${imageSrc}" alt="${wrestler.name}" onerror="this.onerror=null; this.src='${placeholderImage}'">
             <div class="name">${wrestler.name}</div>
             <div class="rank">${wrestler.rank}</div>
         `;
@@ -196,10 +356,10 @@ function goToStep3() {
         return;
     }
 
-    const savedImage = ImageManager.getWrestlerImage(registerSelectedWrestler.id);
+    const imageSrc = getWrestlerImageSrc(registerSelectedWrestler);
     const rikishiName = document.getElementById('rikishi-name').value.trim() || registerSelectedWrestler.name;
 
-    document.getElementById('register-wrestler-image').src = savedImage || placeholderImage;
+    document.getElementById('register-wrestler-image').src = imageSrc;
     document.getElementById('register-wrestler-name').textContent = rikishiName;
     document.getElementById('register-wrestler-rank').textContent = registerSelectedWrestler.rank;
 
@@ -251,8 +411,8 @@ function completeRegistration() {
     };
 
     // Show success
-    const savedImage = ImageManager.getWrestlerImage(registerSelectedWrestler.id);
-    document.getElementById('success-wrestler-image').src = savedImage || placeholderImage;
+    const imageSrc = getWrestlerImageSrc(registerSelectedWrestler);
+    document.getElementById('success-wrestler-image').src = imageSrc;
     document.getElementById('success-rikishi-name').textContent = rikishiName;
     document.getElementById('success-wrestler-rank').textContent = registerSelectedWrestler.rank;
 
@@ -429,8 +589,9 @@ function displayWrestlers() {
             card.style.cursor = 'not-allowed';
         }
 
+        const imageSrc = getWrestlerImageSrc(wrestler);
         card.innerHTML = `
-            <img src="images/${wrestler.image}" alt="${wrestler.name}" class="wrestler-image"
+            <img src="${imageSrc}" alt="${wrestler.name}" class="wrestler-image"
                 onerror="this.onerror=null; this.style.background='#ddd'; this.src='${placeholderImage}'">
             <div class="wrestler-name">${wrestler.name}</div>
             <div class="wrestler-rank">${wrestler.rank}</div>
@@ -475,7 +636,7 @@ function showCharacterBuilder(participant, wrestler) {
 
     const builderImg = document.getElementById('builder-wrestler-image');
     builderImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    builderImg.src = `images/${wrestler.image}`;
+    builderImg.src = getWrestlerImageSrc(wrestler);
 
     document.getElementById('builder-wrestler-name').textContent = `${participant.name}'s ${wrestler.name}`;
     document.getElementById('builder-wrestler-rank').textContent = wrestler.rank;
@@ -601,7 +762,8 @@ function enterDohyo() {
     const wrestler = wrestlers.find(w => w.id === selectedWrestlers[nextParticipant.id]);
 
     indicators[index].classList.add('filled');
-    indicators[index].innerHTML = `<img src="images/${wrestler.image}" alt="${wrestler.name}" onerror="this.onerror=null; this.src='${placeholderImage}'">`;
+    const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
+    indicators[index].innerHTML = `<img src="${wrestlerImgSrc}" alt="${wrestler.name}" onerror="this.onerror=null; this.src='${placeholderImage}'">`;
 
     document.getElementById('entered-count').textContent = enteredParticipants.length;
     showEntrance(nextParticipant);
@@ -613,7 +775,7 @@ function showEntrance(participant) {
 
     const entranceImg = document.getElementById('entrance-wrestler-image');
     entranceImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    entranceImg.src = `images/${wrestler.image}`;
+    entranceImg.src = getWrestlerImageSrc(wrestler);
 
     document.getElementById('entrance-announcement').textContent = 'has entered the dohyo';
     document.getElementById('entrance-wrestler-name').textContent = wrestler.name;
@@ -683,11 +845,13 @@ function displayMatchups() {
     const remainingMatches = matches.filter(m => !m.winner);
 
     remainingMatches.forEach((match) => {
+        const eastImgSrc = getWrestlerImageSrc(match.east.wrestler);
+        const westImgSrc = getWrestlerImageSrc(match.west.wrestler);
         const row = document.createElement('div');
         row.className = 'matchup-row';
         row.innerHTML = `
             <div class="matchup-wrestler east">
-                <img src="images/${match.east.wrestler.image}" alt="${match.east.wrestler.name}" class="matchup-wrestler-image"
+                <img src="${eastImgSrc}" alt="${match.east.wrestler.name}" class="matchup-wrestler-image"
                     onerror="this.onerror=null; this.src='${placeholderImage}'">
                 <div class="matchup-wrestler-info">
                     <div class="matchup-wrestler-name">${match.east.wrestler.name}</div>
@@ -696,7 +860,7 @@ function displayMatchups() {
             </div>
             <div class="matchup-vs">VS</div>
             <div class="matchup-wrestler west">
-                <img src="images/${match.west.wrestler.image}" alt="${match.west.wrestler.name}" class="matchup-wrestler-image"
+                <img src="${westImgSrc}" alt="${match.west.wrestler.name}" class="matchup-wrestler-image"
                     onerror="this.onerror=null; this.src='${placeholderImage}'">
                 <div class="matchup-wrestler-info">
                     <div class="matchup-wrestler-name">${match.west.wrestler.name}</div>
@@ -1110,10 +1274,15 @@ function executeFinishingMove() {
 
     const eastWins = roll < eastNorm;
     const winner = eastWins ? match.east : match.west;
+    const loser = eastWins ? match.west : match.east;
     const winningMove = winner.build.move;
 
     match.winner = winner;
     match.winningMove = winningMove.name;
+
+    // Record match results for basho leaderboard
+    recordRikishiMatch(winner.wrestler.id, true);
+    recordRikishiMatch(loser.wrestler.id, false);
 
     // Show final result
     setTimeout(() => {
@@ -1187,12 +1356,13 @@ function showResults() {
         const medals = ['gold', 'silver', 'bronze'];
         const medalClass = index < 3 ? medals[index] : 'normal';
         const rankDisplay = index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+        const standingImgSrc = getWrestlerImageSrc(standing.wrestler);
 
         const item = document.createElement('div');
         item.className = `standing-item ${medalClass}`;
         item.innerHTML = `
             <div class="standing-rank">${rankDisplay}</div>
-            <img src="images/${standing.wrestler.image}" alt="${standing.wrestler.name}" class="standing-image"
+            <img src="${standingImgSrc}" alt="${standing.wrestler.name}" class="standing-image"
                 onerror="this.onerror=null; this.src='${placeholderImage}'">
             <div class="standing-info">
                 <div class="standing-name">${standing.participant.name}</div>
@@ -1246,9 +1416,9 @@ function initImageManager() {
             slot.dataset.category = 'wrestlers';
             slot.dataset.key = wrestler.id;
 
-            const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+            const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
             slot.innerHTML = `
-                <img id="img-wrestler-${wrestler.id}" src="${savedImage || placeholderImage}" alt="${wrestler.name}">
+                <img id="img-wrestler-${wrestler.id}" src="${wrestlerImgSrc}" alt="${wrestler.name}">
                 <span>${wrestler.name}</span>
             `;
             wrestlerGrid.appendChild(slot);
@@ -1398,10 +1568,10 @@ function updateSeatedWrestlers() {
         }
 
         const displayName = getDisplayName(p.id, wrestler);
-        const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+        const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
 
         seated.innerHTML = `
-            <img src="${savedImage || placeholderImage}" alt="${displayName}" onerror="this.onerror=null; this.src='${placeholderImage}'">
+            <img src="${wrestlerImgSrc}" alt="${displayName}" onerror="this.onerror=null; this.src='${placeholderImage}'">
             <span class="seated-name">${displayName}</span>
             ${nextUpIds.includes(p.id) ? '<span class="next-badge">NEXT</span>' : ''}
         `;
@@ -1454,13 +1624,13 @@ function showLiveStandings() {
     standings.forEach((standing, idx) => {
         const wrestler = standing.wrestler;
         const displayName = getDisplayName(standing.participant.id, wrestler);
-        const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+        const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
 
         const row = document.createElement('div');
         row.className = 'standings-row';
         row.innerHTML = `
             <div class="standings-rank">${idx + 1}</div>
-            <img src="${savedImage || placeholderImage}" alt="${displayName}" class="standings-avatar" onerror="this.onerror=null; this.src='${placeholderImage}'">
+            <img src="${wrestlerImgSrc}" alt="${displayName}" class="standings-avatar" onerror="this.onerror=null; this.src='${placeholderImage}'">
             <div class="standings-info">
                 <span class="standings-name">${displayName}</span>
                 <span class="standings-player">${standing.participant.name}</span>
@@ -1530,7 +1700,7 @@ function showVictoryCelebration(winner) {
 
     const wrestler = winner.wrestler;
     const displayName = getDisplayName(winner.participant.id, wrestler);
-    const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+    const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
 
     const championAvatar = document.getElementById('champion-avatar');
     if (championAvatar) {
@@ -1603,13 +1773,13 @@ function populateAdminWrestlerGrid() {
     grid.innerHTML = '';
 
     wrestlerData.forEach(wrestler => {
-        const savedImage = ImageManager.getWrestlerImage(wrestler.id);
+        const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
         const hasImage = !!savedImage;
 
         const card = document.createElement('div');
         card.className = `admin-wrestler-card ${hasImage ? 'has-image' : ''}`;
         card.innerHTML = `
-            <img src="${savedImage || placeholderImage}" alt="${wrestler.name}" class="wrestler-avatar" onerror="this.onerror=null; this.src='${placeholderImage}'">
+            <img src="${wrestlerImgSrc}" alt="${wrestler.name}" class="wrestler-avatar" onerror="this.onerror=null; this.src='${placeholderImage}'">
             <h4>${wrestler.name}</h4>
             <div class="wrestler-rank">${wrestler.rank}</div>
             <span class="upload-status ${hasImage ? 'uploaded' : 'pending'}">${hasImage ? 'Uploaded' : 'Click to Upload'}</span>
@@ -1750,6 +1920,15 @@ document.addEventListener('DOMContentLoaded', function() {
         ImageManager.init();
     }
 
+    // Initialize tournament tracking
+    initTournamentTracking();
+
+    // Leaderboard button
+    const leaderboardBtn = document.getElementById('view-leaderboard-btn');
+    if (leaderboardBtn) {
+        leaderboardBtn.addEventListener('click', showLeaderboard);
+    }
+
     // Admin buttons
     const adminImagesBtn = document.getElementById('admin-images-btn');
     if (adminImagesBtn) {
@@ -1844,32 +2023,141 @@ initializeBattle = function() {
     updateSeatedWrestlers();
 };
 
-// Override setupStatusBar to use custom names
+// Override setupStatusBar to use custom names and populate arena display
 const originalSetupStatusBar = setupStatusBar;
 setupStatusBar = function() {
     const match = currentBattle.match;
 
-    const eastImg = document.getElementById('status-east-image');
-    const eastSavedImage = ImageManager.getWrestlerImage(match.east.wrestler.id);
-    eastImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    eastImg.src = eastSavedImage || `images/${match.east.wrestler.image}`;
+    // Get wrestler images using the helper function (ensures consistency)
+    const eastImageSrc = getWrestlerImageSrc(match.east.wrestler);
+    const westImageSrc = getWrestlerImageSrc(match.west.wrestler);
 
+    // Get display names
     const eastName = getDisplayName(match.east.participant.id, match.east.wrestler);
+    const westName = getDisplayName(match.west.participant.id, match.west.wrestler);
+
+    // Populate the main arena display (large wrestler images with dohyo)
+    const arenaEastImg = document.getElementById('arena-east-image');
+    if (arenaEastImg) {
+        arenaEastImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
+        arenaEastImg.src = eastImageSrc;
+    }
+    const arenaEastName = document.getElementById('arena-east-name');
+    if (arenaEastName) arenaEastName.textContent = eastName;
+    const arenaEastPlayer = document.getElementById('arena-east-player');
+    if (arenaEastPlayer) arenaEastPlayer.textContent = match.east.participant.name;
+    const arenaEastChoice = document.getElementById('arena-east-choice');
+    if (arenaEastChoice) arenaEastChoice.textContent = 'Choosing...';
+
+    const arenaWestImg = document.getElementById('arena-west-image');
+    if (arenaWestImg) {
+        arenaWestImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
+        arenaWestImg.src = westImageSrc;
+    }
+    const arenaWestName = document.getElementById('arena-west-name');
+    if (arenaWestName) arenaWestName.textContent = westName;
+    const arenaWestPlayer = document.getElementById('arena-west-player');
+    if (arenaWestPlayer) arenaWestPlayer.textContent = match.west.participant.name;
+    const arenaWestChoice = document.getElementById('arena-west-choice');
+    if (arenaWestChoice) arenaWestChoice.textContent = 'Choosing...';
+
+    // Populate the compact status bar
+    const eastImg = document.getElementById('status-east-image');
+    eastImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
+    eastImg.src = eastImageSrc;
     document.getElementById('status-east-name').textContent = eastName;
     document.getElementById('status-east-player').textContent = match.east.participant.name;
 
     const westImg = document.getElementById('status-west-image');
-    const westSavedImage = ImageManager.getWrestlerImage(match.west.wrestler.id);
     westImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    westImg.src = westSavedImage || `images/${match.west.wrestler.image}`;
-
-    const westName = getDisplayName(match.west.participant.id, match.west.wrestler);
+    westImg.src = westImageSrc;
     document.getElementById('status-west-name').textContent = westName;
     document.getElementById('status-west-player').textContent = match.west.participant.name;
 
     document.getElementById('status-east-choice').textContent = 'Choosing...';
     document.getElementById('status-west-choice').textContent = 'Choosing...';
 };
+
+// Function to update arena choices during battle phases
+function updateArenaChoice(side, choiceText, isReady) {
+    const arenaChoice = document.getElementById(`arena-${side}-choice`);
+    if (arenaChoice) {
+        arenaChoice.textContent = choiceText;
+        arenaChoice.classList.toggle('ready', isReady);
+    }
+}
+
+// ==========================================
+// LEADERBOARD FUNCTIONS
+// ==========================================
+function showLeaderboard() {
+    initTournamentTracking();
+
+    const bashoInfo = currentBasho || getCurrentBasho();
+    document.getElementById('leaderboard-basho-name').textContent = bashoInfo.name;
+    document.getElementById('leaderboard-location').textContent = bashoInfo.location;
+    document.getElementById('leaderboard-day').textContent = getRikishiFightDays(1) || 1;
+
+    populateLeaderboard();
+    showTournamentView('leaderboard');
+}
+
+function populateLeaderboard() {
+    const table = document.getElementById('leaderboard-table');
+    if (!table) return;
+
+    table.innerHTML = '';
+
+    // Sort wrestlers by wins, then by win ratio
+    const sortedWrestlers = [...wrestlerData].sort((a, b) => {
+        const aWins = getRikishiWins(a.id);
+        const bWins = getRikishiWins(b.id);
+        if (bWins !== aWins) return bWins - aWins;
+
+        const aLosses = getRikishiLosses(a.id);
+        const bLosses = getRikishiLosses(b.id);
+        const aTotal = aWins + aLosses;
+        const bTotal = bWins + bLosses;
+        const aRatio = aTotal > 0 ? aWins / aTotal : 0;
+        const bRatio = bTotal > 0 ? bWins / bTotal : 0;
+        return bRatio - aRatio;
+    });
+
+    sortedWrestlers.forEach((wrestler, index) => {
+        const wins = getRikishiWins(wrestler.id);
+        const losses = getRikishiLosses(wrestler.id);
+        const canFight = canRikishiFight(wrestler.id);
+        const imageSrc = getWrestlerImageSrc(wrestler);
+
+        const row = document.createElement('div');
+        row.className = `leaderboard-row ${index === 0 && wins > 0 ? 'leader' : ''}`;
+        row.innerHTML = `
+            <div class="leaderboard-rank">${index + 1}</div>
+            <img src="${imageSrc}" alt="${wrestler.name}" class="leaderboard-avatar" onerror="this.onerror=null; this.src='${placeholderImage}'">
+            <div class="leaderboard-info">
+                <span class="leaderboard-name">${wrestler.name}</span>
+                <span class="leaderboard-wrestler-rank">${wrestler.rank}</span>
+            </div>
+            <div class="leaderboard-record">
+                <span class="wins">${wins}W</span> - <span class="losses">${losses}L</span>
+            </div>
+            <div class="leaderboard-tally">
+                ${formatWinsAsTally(wins)}
+            </div>
+            <div class="leaderboard-status ${canFight ? 'available' : 'fought'}">
+                ${canFight ? 'Available' : 'Fought Today'}
+            </div>
+        `;
+        table.appendChild(row);
+    });
+}
+
+function confirmResetBasho() {
+    if (confirm('Are you sure you want to reset the current basho? All win/loss records will be cleared.')) {
+        resetTournamentTracking();
+        populateLeaderboard();
+    }
+}
 
 // Override nextBout to track tournament wins and optionally show standings
 const originalNextBout = nextBout;

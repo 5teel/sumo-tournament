@@ -343,6 +343,7 @@
                         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                             <button id="admin-images-btn" class="submit-btn" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">Upload Wrestler Avatars</button>
                             <button id="admin-scenes-btn" class="submit-btn" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">Upload Scene Images</button>
+                            <button id="view-leaderboard-btn" class="submit-btn" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);">View Basho Leaderboard</button>
                         </div>
                     </div>
                 </div>
@@ -626,7 +627,42 @@
                             <span class="phase-indicator" id="phase-indicator">Preparation</span>
                         </div>
 
-                        <!-- Wrestler Status Bar (Always Visible) -->
+                        <!-- Main Battle Arena Display -->
+                        <div class="battle-arena-display">
+                            <!-- East Wrestler -->
+                            <div class="arena-wrestler east-side">
+                                <div class="arena-wrestler-card">
+                                    <img id="arena-east-image" src="" alt="" class="arena-wrestler-image">
+                                    <div class="arena-wrestler-info">
+                                        <span class="arena-wrestler-name" id="arena-east-name"></span>
+                                        <span class="arena-wrestler-player" id="arena-east-player"></span>
+                                    </div>
+                                    <div class="arena-choice" id="arena-east-choice">Choosing...</div>
+                                </div>
+                            </div>
+
+                            <!-- Center Dohyo with VS -->
+                            <div class="arena-center">
+                                <div class="dohyo-container">
+                                    <img src="images/Dohyo 2.jpg" alt="Dohyo" class="dohyo-image-battle" onerror="this.style.display='none'">
+                                    <div class="vs-overlay">VS</div>
+                                </div>
+                            </div>
+
+                            <!-- West Wrestler -->
+                            <div class="arena-wrestler west-side">
+                                <div class="arena-wrestler-card">
+                                    <img id="arena-west-image" src="" alt="" class="arena-wrestler-image">
+                                    <div class="arena-wrestler-info">
+                                        <span class="arena-wrestler-name" id="arena-west-name"></span>
+                                        <span class="arena-wrestler-player" id="arena-west-player"></span>
+                                    </div>
+                                    <div class="arena-choice" id="arena-west-choice">Choosing...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wrestler Status Bar (Compact) -->
                         <div class="battle-status-bar">
                             <div class="status-wrestler east">
                                 <img id="status-east-image" src="" alt="" class="status-image">
@@ -847,6 +883,38 @@
                             <div id="upcoming-bouts-list"></div>
                         </div>
                         <button id="continue-tournament-btn" class="submit-btn">Continue Tournament</button>
+                    </div>
+                </div>
+
+                <!-- Basho Leaderboard -->
+                <div id="leaderboard-view" class="tournament-view">
+                    <div class="leaderboard-container">
+                        <div class="leaderboard-header">
+                            <h2 class="leaderboard-title" id="leaderboard-basho-name">Hatsu Basho</h2>
+                            <p class="leaderboard-subtitle">Day <span id="leaderboard-day">1</span> of 15</p>
+                            <div class="leaderboard-location" id="leaderboard-location">Tokyo</div>
+                        </div>
+
+                        <div class="leaderboard-table" id="leaderboard-table">
+                            <!-- Leaderboard rows will be generated here -->
+                        </div>
+
+                        <div class="leaderboard-legend">
+                            <h4>Win Tally Legend</h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <span class="tally-group partial">|</span> = 1 Win
+                                </div>
+                                <div class="legend-item">
+                                    <span class="tally-group complete">||||</span> = 5 Wins
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="leaderboard-actions">
+                            <button id="leaderboard-back-btn" class="submit-btn" onclick="showTournamentView('registration')">Back to Tournament</button>
+                            <button id="reset-basho-btn" class="submit-btn" style="background: #e74c3c;" onclick="confirmResetBasho()">Reset Basho</button>
+                        </div>
                     </div>
                 </div>
 

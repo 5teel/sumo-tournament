@@ -637,193 +637,181 @@
                     </div>
                 </div>
 
-                <!-- Multi-Phase Battle View -->
+                <!-- Multi-Phase Battle View - Compact Single Screen -->
                 <div id="battle-view" class="tournament-view">
-                    <div class="battle-container">
-                        <div class="battle-header">
-                            <span class="bout-number" id="bout-number">Bout 1</span>
-                            <span class="phase-indicator" id="phase-indicator">Preparation</span>
+                    <div class="battle-container compact-battle">
+                        <!-- Top Row: Header + Waiting Rikishi -->
+                        <div class="battle-top-bar">
+                            <div class="battle-header-compact">
+                                <span class="bout-number" id="bout-number">Bout 1</span>
+                                <span class="phase-indicator" id="phase-indicator">Preparation</span>
+                            </div>
+                            <div class="waiting-strip">
+                                <span class="waiting-label">Next:</span>
+                                <div class="seated-wrestlers" id="seated-wrestlers"></div>
+                            </div>
                         </div>
 
-                        <!-- Main Battle Arena Display -->
-                        <div class="battle-arena-display">
-                            <!-- East Side: Boosts + Rikishi -->
-                            <div class="arena-side east-side">
-                                <div class="boost-panel east-boosts" id="east-boost-panel">
+                        <!-- Main Battle Area: Arena + Choices Side by Side -->
+                        <div class="battle-main-area">
+                            <!-- Left: East Side -->
+                            <div class="battle-side east-battle-side">
+                                <div class="compact-wrestler-card east-side">
+                                    <img id="arena-east-image" src="" alt="" class="compact-wrestler-image">
+                                    <div class="compact-wrestler-info">
+                                        <span class="compact-wrestler-name" id="arena-east-name"></span>
+                                        <span class="compact-wrestler-player" id="arena-east-player"></span>
+                                    </div>
+                                </div>
+                                <div class="boost-strip east-boosts" id="east-boost-panel">
                                     <div class="boost-container" id="east-boosts"></div>
-                                    <div class="move-description" id="east-move-desc"></div>
                                 </div>
-                                <div class="arena-wrestler-card">
-                                    <img id="arena-east-image" src="" alt="" class="arena-wrestler-image">
-                                    <div class="arena-wrestler-info">
-                                        <span class="arena-wrestler-name" id="arena-east-name"></span>
-                                        <span class="arena-wrestler-player" id="arena-east-player"></span>
-                                    </div>
-                                    <div class="arena-choice" id="arena-east-choice">Choosing...</div>
+                                <div class="move-strip" id="east-move-desc"></div>
+                                <div class="arena-choice compact-choice" id="arena-east-choice">Choosing...</div>
+                            </div>
+
+                            <!-- Center: VS + Dohyo -->
+                            <div class="battle-center">
+                                <div class="compact-dohyo">
+                                    <img src="images/Dohyo 2.jpg" alt="Dohyo" class="compact-dohyo-image" onerror="this.style.display='none'">
+                                    <div class="compact-vs">VS</div>
                                 </div>
                             </div>
 
-                            <!-- Center Dohyo with VS -->
-                            <div class="arena-center">
-                                <div class="dohyo-container">
-                                    <img src="images/Dohyo 2.jpg" alt="Dohyo" class="dohyo-image-battle" onerror="this.style.display='none'">
-                                    <div class="vs-overlay">VS</div>
-                                </div>
-                            </div>
-
-                            <!-- West Side: Rikishi + Boosts -->
-                            <div class="arena-side west-side">
-                                <div class="arena-wrestler-card">
-                                    <img id="arena-west-image" src="" alt="" class="arena-wrestler-image">
-                                    <div class="arena-wrestler-info">
-                                        <span class="arena-wrestler-name" id="arena-west-name"></span>
-                                        <span class="arena-wrestler-player" id="arena-west-player"></span>
+                            <!-- Right: West Side -->
+                            <div class="battle-side west-battle-side">
+                                <div class="compact-wrestler-card west-side">
+                                    <img id="arena-west-image" src="" alt="" class="compact-wrestler-image">
+                                    <div class="compact-wrestler-info">
+                                        <span class="compact-wrestler-name" id="arena-west-name"></span>
+                                        <span class="compact-wrestler-player" id="arena-west-player"></span>
                                     </div>
-                                    <div class="arena-choice" id="arena-west-choice">Choosing...</div>
                                 </div>
-                                <div class="boost-panel west-boosts" id="west-boost-panel">
+                                <div class="boost-strip west-boosts" id="west-boost-panel">
                                     <div class="boost-container" id="west-boosts"></div>
-                                    <div class="move-description" id="west-move-desc"></div>
                                 </div>
+                                <div class="move-strip" id="west-move-desc"></div>
+                                <div class="arena-choice compact-choice" id="arena-west-choice">Choosing...</div>
                             </div>
                         </div>
 
-                        <!-- Seated Wrestlers (Waiting for their turn) -->
-                        <div class="seated-wrestlers-container">
-                            <h5 class="seated-title">Waiting Rikishi</h5>
-                            <div class="seated-wrestlers" id="seated-wrestlers">
-                                <!-- Seated wrestlers will be generated dynamically -->
-                            </div>
-                        </div>
-
-                        <!-- Phase Content Area -->
-                        <div class="phase-content" id="phase-content">
-                            <!-- Phase 1: Salt Throwing -->
-                            <div class="phase-panel" id="phase-salt" style="display: none;">
-                                <h3 class="phase-title">Purify the Dohyo</h3>
-                                <p class="phase-description">Choose how much salt to throw. This is a sacred ritual!</p>
-                                <div class="choice-grid">
-                                    <div class="choice-card" data-choice="little">
-                                        <div class="choice-icon">🧂</div>
-                                        <h4>Little Salt</h4>
-                                        <p>A measured, focused approach</p>
-                                        <div class="choice-bonus">+Focus</div>
-                                    </div>
-                                    <div class="choice-card" data-choice="lot">
-                                        <div class="choice-icon">🧂🧂🧂</div>
-                                        <h4>Lots of Salt</h4>
-                                        <p>Show your fighting spirit!</p>
-                                        <div class="choice-bonus">+Spirit</div>
-                                    </div>
+                        <!-- Bottom: Phase Choices (Horizontal) -->
+                        <div class="phase-content compact-phase" id="phase-content">
+                            <!-- Phase 1: Salt -->
+                            <div class="phase-panel compact-panel" id="phase-salt" style="display: none;">
+                                <div class="phase-header-inline">
+                                    <span class="phase-title-inline">Salt Ritual</span>
                                 </div>
-                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                                <div class="choice-row">
+                                    <div class="choice-card compact-card" data-choice="little">
+                                        <span class="choice-icon-sm">🧂</span>
+                                        <span class="choice-label">Little Salt</span>
+                                        <span class="choice-bonus-sm">+Focus</span>
+                                    </div>
+                                    <div class="choice-card compact-card" data-choice="lot">
+                                        <span class="choice-icon-sm">🧂🧂🧂</span>
+                                        <span class="choice-label">Lots of Salt</span>
+                                        <span class="choice-bonus-sm">+Spirit</span>
+                                    </div>
+                                    <button class="confirm-choice-btn compact-confirm" disabled>Confirm</button>
+                                </div>
                             </div>
 
-                            <!-- Phase 2: Display/Intimidation -->
-                            <div class="phase-panel" id="phase-display" style="display: none;">
-                                <h3 class="phase-title">Intimidation Display</h3>
-                                <p class="phase-description">How will you psych out your opponent?</p>
-                                <div class="choice-grid">
-                                    <div class="choice-card" data-choice="mawashi">
-                                        <div class="choice-icon">👋</div>
-                                        <h4>Slap Mawashi</h4>
-                                        <p>Smack your belt aggressively</p>
-                                        <div class="choice-bonus">+Intimidation</div>
-                                    </div>
-                                    <div class="choice-card" data-choice="auraPose">
-                                        <div class="choice-icon">✨</div>
-                                        <h4>Aura-Worthy Pose</h4>
-                                        <p>Strike a commanding pose</p>
-                                        <div class="choice-bonus">+Crowd Support</div>
-                                    </div>
+                            <!-- Phase 2: Display -->
+                            <div class="phase-panel compact-panel" id="phase-display" style="display: none;">
+                                <div class="phase-header-inline">
+                                    <span class="phase-title-inline">Intimidation</span>
                                 </div>
-                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                                <div class="choice-row">
+                                    <div class="choice-card compact-card" data-choice="mawashi">
+                                        <span class="choice-icon-sm">👋</span>
+                                        <span class="choice-label">Slap Mawashi</span>
+                                        <span class="choice-bonus-sm">+Intimidation</span>
+                                    </div>
+                                    <div class="choice-card compact-card" data-choice="auraPose">
+                                        <span class="choice-icon-sm">✨</span>
+                                        <span class="choice-label">Aura Pose</span>
+                                        <span class="choice-bonus-sm">+Crowd</span>
+                                    </div>
+                                    <button class="confirm-choice-btn compact-confirm" disabled>Confirm</button>
+                                </div>
                             </div>
 
                             <!-- Phase 3: Tachiai -->
-                            <div class="phase-panel" id="phase-tachiai" style="display: none;">
-                                <h3 class="phase-title">The Tachiai!</h3>
-                                <p class="phase-description">Choose your initial clash strategy</p>
-                                <div class="choice-grid three-col">
-                                    <div class="choice-card" data-choice="hard">
-                                        <div class="choice-icon">💥</div>
-                                        <h4>Hard Tachiai</h4>
-                                        <p>Powerful forward charge</p>
-                                        <div class="choice-bonus">Beats Henka</div>
-                                    </div>
-                                    <div class="choice-card" data-choice="soft">
-                                        <div class="choice-icon">🎯</div>
-                                        <h4>Soft Tachiai</h4>
-                                        <p>Measured initial clash</p>
-                                        <div class="choice-bonus">Balanced</div>
-                                    </div>
-                                    <div class="choice-card shameful" data-choice="henka">
-                                        <div class="choice-icon">↩️</div>
-                                        <h4>Henka</h4>
-                                        <p>Sidestep (shameful!)</p>
-                                        <div class="choice-bonus warning">Risky! -Spirit</div>
-                                    </div>
+                            <div class="phase-panel compact-panel" id="phase-tachiai" style="display: none;">
+                                <div class="phase-header-inline">
+                                    <span class="phase-title-inline">Tachiai!</span>
                                 </div>
-                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                                <div class="choice-row">
+                                    <div class="choice-card compact-card" data-choice="hard">
+                                        <span class="choice-icon-sm">💥</span>
+                                        <span class="choice-label">Hard</span>
+                                        <span class="choice-bonus-sm">Power</span>
+                                    </div>
+                                    <div class="choice-card compact-card" data-choice="soft">
+                                        <span class="choice-icon-sm">🎯</span>
+                                        <span class="choice-label">Soft</span>
+                                        <span class="choice-bonus-sm">Balanced</span>
+                                    </div>
+                                    <div class="choice-card compact-card shameful" data-choice="henka">
+                                        <span class="choice-icon-sm">↩️</span>
+                                        <span class="choice-label">Henka</span>
+                                        <span class="choice-bonus-sm warning">Risky!</span>
+                                    </div>
+                                    <button class="confirm-choice-btn compact-confirm" disabled>Confirm</button>
+                                </div>
                             </div>
 
-                            <!-- Phase 4: Battle Technique -->
-                            <div class="phase-panel" id="phase-technique" style="display: none;">
-                                <h3 class="phase-title">Battle Technique</h3>
-                                <p class="phase-description">How will you attack?</p>
-                                <div class="choice-grid four-col">
-                                    <div class="choice-card" data-choice="grip">
-                                        <div class="choice-icon">🤝</div>
-                                        <h4>Belt Grip</h4>
-                                        <p>Secure the mawashi</p>
-                                        <div class="choice-bonus">+Throw Power</div>
-                                    </div>
-                                    <div class="choice-card" data-choice="tsuppari">
-                                        <div class="choice-icon">👐</div>
-                                        <h4>Tsuppari</h4>
-                                        <p>Palm thrusts</p>
-                                        <div class="choice-bonus">+Strike Power</div>
-                                    </div>
-                                    <div class="choice-card" data-choice="push">
-                                        <div class="choice-icon">➡️</div>
-                                        <h4>Oshi</h4>
-                                        <p>Forward pushing</p>
-                                        <div class="choice-bonus">+Push Power</div>
-                                    </div>
-                                    <div class="choice-card" data-choice="pull">
-                                        <div class="choice-icon">↩️</div>
-                                        <h4>Hiki</h4>
-                                        <p>Pulling technique</p>
-                                        <div class="choice-bonus">+Balance</div>
-                                    </div>
+                            <!-- Phase 4: Technique -->
+                            <div class="phase-panel compact-panel" id="phase-technique" style="display: none;">
+                                <div class="phase-header-inline">
+                                    <span class="phase-title-inline">Attack!</span>
                                 </div>
-                                <button class="confirm-choice-btn submit-btn" disabled>Confirm Choice</button>
+                                <div class="choice-row">
+                                    <div class="choice-card compact-card" data-choice="grip">
+                                        <span class="choice-icon-sm">🤝</span>
+                                        <span class="choice-label">Belt Grip</span>
+                                        <span class="choice-bonus-sm">+Throw</span>
+                                    </div>
+                                    <div class="choice-card compact-card" data-choice="tsuppari">
+                                        <span class="choice-icon-sm">👐</span>
+                                        <span class="choice-label">Tsuppari</span>
+                                        <span class="choice-bonus-sm">+Strike</span>
+                                    </div>
+                                    <div class="choice-card compact-card" data-choice="push">
+                                        <span class="choice-icon-sm">➡️</span>
+                                        <span class="choice-label">Oshi</span>
+                                        <span class="choice-bonus-sm">+Push</span>
+                                    </div>
+                                    <div class="choice-card compact-card" data-choice="pull">
+                                        <span class="choice-icon-sm">↩️</span>
+                                        <span class="choice-label">Hiki</span>
+                                        <span class="choice-bonus-sm">+Balance</span>
+                                    </div>
+                                    <button class="confirm-choice-btn compact-confirm" disabled>Confirm</button>
+                                </div>
                             </div>
 
-                            <!-- Phase 5: Finishing Move -->
-                            <div class="phase-panel" id="phase-finish" style="display: none;">
-                                <h3 class="phase-title">Execute Finishing Move!</h3>
-                                <p class="phase-description">Your signature move: <strong id="your-signature-move"></strong></p>
-                                <div class="finishing-display">
-                                    <div class="finish-wrestler east">
-                                        <h4 id="finish-east-name"></h4>
-                                        <div class="finish-chance">
-                                            <span>Success Chance:</span>
-                                            <span class="chance-value" id="finish-east-chance">50%</span>
-                                        </div>
-                                        <div class="finish-bonuses" id="finish-east-bonuses"></div>
+                            <!-- Phase 5: Finish -->
+                            <div class="phase-panel compact-panel" id="phase-finish" style="display: none;">
+                                <div class="phase-header-inline">
+                                    <span class="phase-title-inline">Finishing Move!</span>
+                                    <span class="signature-move-display" id="your-signature-move"></span>
+                                </div>
+                                <div class="finish-row">
+                                    <div class="finish-compact east">
+                                        <span id="finish-east-name" class="finish-name"></span>
+                                        <span class="finish-chance-compact"><span id="finish-east-chance">50%</span></span>
                                     </div>
-                                    <div class="finish-vs">
-                                        <button id="execute-finish-btn" class="fight-button">EXECUTE!</button>
+                                    <button id="execute-finish-btn" class="fight-button compact-fight">EXECUTE!</button>
+                                    <div class="finish-compact west">
+                                        <span id="finish-west-name" class="finish-name"></span>
+                                        <span class="finish-chance-compact"><span id="finish-west-chance">50%</span></span>
                                     </div>
-                                    <div class="finish-wrestler west">
-                                        <h4 id="finish-west-name"></h4>
-                                        <div class="finish-chance">
-                                            <span>Success Chance:</span>
-                                            <span class="chance-value" id="finish-west-chance">50%</span>
-                                        </div>
-                                        <div class="finish-bonuses" id="finish-west-bonuses"></div>
-                                    </div>
+                                </div>
+                                <div class="finish-bonuses-row">
+                                    <div class="finish-bonuses compact-bonuses" id="finish-east-bonuses"></div>
+                                    <div class="finish-bonuses compact-bonuses" id="finish-west-bonuses"></div>
                                 </div>
                             </div>
 

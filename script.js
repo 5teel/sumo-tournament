@@ -1677,9 +1677,10 @@ function updateSeatedWrestlers() {
     const nextMatch = matches.find((m, idx) => idx > currentBoutIndex && !m.winner);
     const nextUpIds = nextMatch ? [nextMatch.east.participant.id, nextMatch.west.participant.id] : [];
 
-    // Create seated wrestler elements
+    // Create seated wrestler elements (compact avatars only)
     participants.forEach(p => {
         if (currentParticipantIds.includes(p.id)) return; // Skip current fighters
+        if (!nextUpIds.includes(p.id)) return; // Only show next up wrestlers in compact view
 
         const wrestler = wrestlers.find(w => w.id === selectedWrestlers[p.id]);
         if (!wrestler) return;
@@ -1694,9 +1695,7 @@ function updateSeatedWrestlers() {
         const wrestlerImgSrc = getWrestlerImageSrc(wrestler);
 
         seated.innerHTML = `
-            <img src="${wrestlerImgSrc}" alt="${displayName}" onerror="this.onerror=null; this.src='${placeholderImage}'">
-            <span class="seated-name">${displayName}</span>
-            ${nextUpIds.includes(p.id) ? '<span class="next-badge">NEXT</span>' : ''}
+            <img src="${wrestlerImgSrc}" alt="${displayName}" title="${displayName}" onerror="this.onerror=null; this.src='${placeholderImage}'">
         `;
 
         container.appendChild(seated);

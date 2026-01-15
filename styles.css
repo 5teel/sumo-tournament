@@ -1030,7 +1030,162 @@ body {
 .lobby-subtitle {
     color: #666;
     font-size: 1.1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Shared Screen Mode Toggle */
+.shared-screen-toggle {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    width: 50px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 13px;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.toggle-slider::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-label input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #c41e3a 0%, #e74c3c 100%);
+}
+
+.toggle-label input:checked + .toggle-slider::after {
+    transform: translateX(24px);
+}
+
+.toggle-text {
+    color: #333;
+}
+
+.toggle-hint {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+/* Lobby Buttons */
+.lobby-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fullscreen-btn {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+}
+
+.fullscreen-btn:hover {
+    background: linear-gradient(135deg, #34495e 0%, #4a6278 100%) !important;
+}
+
+.fullscreen-icon {
+    font-size: 1.2rem;
+}
+
+/* Shared Screen Mode Styles */
+body.shared-screen-mode {
+    background: #0a0a0a !important;
+}
+
+body.shared-screen-mode .tournament-container {
+    max-width: 100%;
+    padding: 0.5rem;
+}
+
+body.shared-screen-mode .battle-arena-display {
+    min-height: 60vh;
+    padding: 2rem;
+}
+
+body.shared-screen-mode .arena-wrestler-image {
+    width: 180px;
+    height: 300px;
+}
+
+body.shared-screen-mode .arena-wrestler-name {
+    font-size: 1.5rem;
+}
+
+body.shared-screen-mode .vs-overlay {
+    font-size: 5rem;
+}
+
+body.shared-screen-mode .dohyo-container {
+    width: 280px;
+    height: 280px;
+}
+
+body.shared-screen-mode .boost-panel {
+    width: 200px;
+}
+
+body.shared-screen-mode .stat-boost {
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+}
+
+body.shared-screen-mode .move-description {
+    font-size: 1rem;
+}
+
+/* Turn Indicator for Shared Screen */
+.turn-indicator {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    animation: turnPulse 2s ease-in-out infinite;
+    display: none;
+}
+
+body.shared-screen-mode .turn-indicator {
+    display: block;
+}
+
+@keyframes turnPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
 }
 
 .dohyo-arena {
@@ -1789,25 +1944,129 @@ body {
 .battle-arena-display {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
     padding: 1rem;
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     border-radius: 15px;
-    min-height: 350px;
+    min-height: 320px;
 }
 
-.arena-wrestler {
-    flex: 0 0 auto;
+.arena-side {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+}
+
+.arena-side.east-side {
+    flex-direction: row;
+}
+
+.arena-side.west-side {
+    flex-direction: row;
+}
+
+/* Boost Panel - contains stat boosts and move descriptions */
+.boost-panel {
+    width: 160px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.boost-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Individual stat boost bubble */
+.stat-boost {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    animation: boostRise 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.east-boosts .stat-boost {
+    background: linear-gradient(135deg, #c41e3a 0%, #e74c3c 100%);
+    box-shadow: 0 2px 10px rgba(196, 30, 58, 0.5);
+    text-align: right;
+}
+
+.west-boosts .stat-boost {
+    background: linear-gradient(135deg, #1a56c4 0%, #3498db 100%);
+    box-shadow: 0 2px 10px rgba(26, 86, 196, 0.5);
+    text-align: left;
+}
+
+.stat-boost.positive {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+    box-shadow: 0 2px 10px rgba(39, 174, 96, 0.5) !important;
+}
+
+.stat-boost.negative {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%) !important;
+    box-shadow: 0 2px 10px rgba(192, 57, 43, 0.5) !important;
+}
+
+@keyframes boostRise {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Move description area */
+.move-description {
+    min-height: 60px;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: #ddd;
+    line-height: 1.3;
+    margin-top: 0.5rem;
+}
+
+.east-boosts .move-description {
+    text-align: right;
+    border-left: 3px solid #c41e3a;
+}
+
+.west-boosts .move-description {
+    text-align: left;
+    border-right: 3px solid #1a56c4;
+}
+
+.move-description .move-name {
+    font-weight: bold;
+    color: #fff;
+    display: block;
+    margin-bottom: 0.2rem;
 }
 
 .arena-wrestler-card {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
-    padding: 1rem;
+    padding: 0.75rem;
     text-align: center;
     backdrop-filter: blur(5px);
 }
@@ -1823,12 +2082,12 @@ body {
 }
 
 .arena-wrestler-image {
-    width: 140px;
-    height: 246px;
+    width: 120px;
+    height: 200px;
     border-radius: 10px;
     object-fit: cover;
-    border: 4px solid;
-    margin-bottom: 0.75rem;
+    border: 3px solid;
+    margin-bottom: 0.5rem;
 }
 
 .east-side .arena-wrestler-image {
@@ -1840,12 +2099,12 @@ body {
 }
 
 .arena-wrestler-info {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 .arena-wrestler-name {
     display: block;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -1853,15 +2112,15 @@ body {
 
 .arena-wrestler-player {
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #ccc;
 }
 
 .arena-choice {
-    padding: 0.4rem 1rem;
+    padding: 0.3rem 0.8rem;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: white;
 }
 
@@ -1879,8 +2138,8 @@ body {
 
 .dohyo-container {
     position: relative;
-    width: 280px;
-    height: 280px;
+    width: 200px;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1899,7 +2158,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 5rem;
+    font-size: 3.5rem;
     font-weight: 900;
     color: white;
     text-shadow:
@@ -1907,7 +2166,7 @@ body {
         0 0 40px rgba(255, 107, 107, 0.5),
         3px 3px 0 #c41e3a,
         -3px -3px 0 #1a56c4;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
     animation: vsPulse 2s ease-in-out infinite;
     z-index: 10;
 }

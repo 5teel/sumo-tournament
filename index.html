@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Turn Indicator for Shared Screen Mode -->
+    <div id="turn-indicator" class="turn-indicator"></div>
+
     <nav class="navbar">
         <div class="nav-container">
             <h1 class="logo">相撲 Sumo</h1>
@@ -37,7 +40,7 @@
                 </iframe>
             </div>
 
-            <button class="cta-button" onclick="showRegistrationPage()">Register for Sumo</button>
+            <a href="#register" class="cta-button" onclick="showRegistrationPage()">Register for Sumo</a>
         </div>
     </section>
 
@@ -300,7 +303,7 @@
 
     <section id="tournament" class="section">
         <div class="container">
-            <h2 class="section-title">Mock Sumo Tournament</h2>
+            <h2 class="section-title">Summit Sumo Summer Championship</h2>
             <div class="tournament-container">
                 <div id="registration-view" class="tournament-view active">
                     <h3>Register for the Tournament</h3>
@@ -529,6 +532,16 @@
                         <h3 class="lobby-title">The Dohyo Awaits...</h3>
                         <p class="lobby-subtitle">Waiting for all rikishi to enter the arena</p>
 
+                        <!-- Shared Screen Mode Toggle -->
+                        <div class="shared-screen-toggle">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="shared-screen-mode" onchange="toggleSharedScreenMode()">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-text">Shared Screen Mode</span>
+                            </label>
+                            <p class="toggle-hint">Enable for group viewing on one screen</p>
+                        </div>
+
                         <div class="dohyo-arena">
                             <div class="dohyo-ring">
                                 <div class="dohyo-circle">
@@ -549,7 +562,12 @@
                             </div>
                         </div>
 
-                        <button id="enter-dohyo-btn" class="submit-btn enter-btn">Enter the Dohyo</button>
+                        <div class="lobby-buttons">
+                            <button id="enter-dohyo-btn" class="submit-btn enter-btn">Enter the Dohyo</button>
+                            <button id="fullscreen-btn" class="submit-btn fullscreen-btn" onclick="toggleFullscreen()">
+                                <span class="fullscreen-icon">⛶</span> Fullscreen
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -629,8 +647,12 @@
 
                         <!-- Main Battle Arena Display -->
                         <div class="battle-arena-display">
-                            <!-- East Wrestler -->
-                            <div class="arena-wrestler east-side">
+                            <!-- East Side: Boosts + Rikishi -->
+                            <div class="arena-side east-side">
+                                <div class="boost-panel east-boosts" id="east-boost-panel">
+                                    <div class="boost-container" id="east-boosts"></div>
+                                    <div class="move-description" id="east-move-desc"></div>
+                                </div>
                                 <div class="arena-wrestler-card">
                                     <img id="arena-east-image" src="" alt="" class="arena-wrestler-image">
                                     <div class="arena-wrestler-info">
@@ -649,8 +671,8 @@
                                 </div>
                             </div>
 
-                            <!-- West Wrestler -->
-                            <div class="arena-wrestler west-side">
+                            <!-- West Side: Rikishi + Boosts -->
+                            <div class="arena-side west-side">
                                 <div class="arena-wrestler-card">
                                     <img id="arena-west-image" src="" alt="" class="arena-wrestler-image">
                                     <div class="arena-wrestler-info">
@@ -659,27 +681,10 @@
                                     </div>
                                     <div class="arena-choice" id="arena-west-choice">Choosing...</div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Wrestler Status Bar (Compact) -->
-                        <div class="battle-status-bar">
-                            <div class="status-wrestler east">
-                                <img id="status-east-image" src="" alt="" class="status-image">
-                                <div class="status-info">
-                                    <span class="status-name" id="status-east-name"></span>
-                                    <span class="status-player" id="status-east-player"></span>
+                                <div class="boost-panel west-boosts" id="west-boost-panel">
+                                    <div class="boost-container" id="west-boosts"></div>
+                                    <div class="move-description" id="west-move-desc"></div>
                                 </div>
-                                <div class="status-choice" id="status-east-choice">Choosing...</div>
-                            </div>
-                            <div class="status-vs">VS</div>
-                            <div class="status-wrestler west">
-                                <div class="status-choice" id="status-west-choice">Choosing...</div>
-                                <div class="status-info">
-                                    <span class="status-name" id="status-west-name"></span>
-                                    <span class="status-player" id="status-west-player"></span>
-                                </div>
-                                <img id="status-west-image" src="" alt="" class="status-image">
                             </div>
                         </div>
 
@@ -688,26 +693,6 @@
                             <h5 class="seated-title">Waiting Rikishi</h5>
                             <div class="seated-wrestlers" id="seated-wrestlers">
                                 <!-- Seated wrestlers will be generated dynamically -->
-                            </div>
-                        </div>
-
-                        <!-- Battle Stats Display -->
-                        <div class="battle-stats-display">
-                            <div class="stats-column east" id="east-battle-stats">
-                                <h4>Battle Stats</h4>
-                                <div class="battle-stat-row"><span>Spirit</span><span id="east-spirit">0</span></div>
-                                <div class="battle-stat-row"><span>Focus</span><span id="east-focus">0</span></div>
-                                <div class="battle-stat-row"><span>Intimidation</span><span id="east-intimidation">0</span></div>
-                                <div class="battle-stat-row"><span>Crowd Support</span><span id="east-crowd">0</span></div>
-                                <div class="battle-stat-row"><span>Momentum</span><span id="east-momentum">0</span></div>
-                            </div>
-                            <div class="stats-column west" id="west-battle-stats">
-                                <h4>Battle Stats</h4>
-                                <div class="battle-stat-row"><span>Spirit</span><span id="west-spirit">0</span></div>
-                                <div class="battle-stat-row"><span>Focus</span><span id="west-focus">0</span></div>
-                                <div class="battle-stat-row"><span>Intimidation</span><span id="west-intimidation">0</span></div>
-                                <div class="battle-stat-row"><span>Crowd Support</span><span id="west-crowd">0</span></div>
-                                <div class="battle-stat-row"><span>Momentum</span><span id="west-momentum">0</span></div>
                             </div>
                         </div>
 

@@ -935,6 +935,11 @@ function initializeBattle() {
     setupStatusBar();
     updateBattleStatsDisplay();
 
+    // Clear previous battle boosts and descriptions
+    clearStatBoosts('east');
+    clearStatBoosts('west');
+    clearMoveDescriptions();
+
     // Start with first phase
     battlePhase = 0;
     showBattlePhase(PHASES[battlePhase]);
@@ -945,37 +950,89 @@ function initializeBattle() {
 function setupStatusBar() {
     const match = currentBattle.match;
 
-    const eastImg = document.getElementById('status-east-image');
-    eastImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    eastImg.src = `images/${match.east.wrestler.image}`;
-    document.getElementById('status-east-name').textContent = match.east.wrestler.name;
-    document.getElementById('status-east-player').textContent = match.east.participant.name;
+    // Get wrestler images using the helper function
+    const eastImageSrc = getWrestlerImageSrc(match.east.wrestler);
+    const westImageSrc = getWrestlerImageSrc(match.west.wrestler);
 
-    const westImg = document.getElementById('status-west-image');
-    westImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    westImg.src = `images/${match.west.wrestler.image}`;
-    document.getElementById('status-west-name').textContent = match.west.wrestler.name;
-    document.getElementById('status-west-player').textContent = match.west.participant.name;
+    // Populate arena display
+    const arenaEastImg = document.getElementById('arena-east-image');
+    if (arenaEastImg) {
+        arenaEastImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
+        arenaEastImg.src = eastImageSrc;
+    }
+    const arenaEastName = document.getElementById('arena-east-name');
+    if (arenaEastName) arenaEastName.textContent = match.east.wrestler.name;
+    const arenaEastPlayer = document.getElementById('arena-east-player');
+    if (arenaEastPlayer) arenaEastPlayer.textContent = match.east.participant.name;
 
-    document.getElementById('status-east-choice').textContent = 'Choosing...';
-    document.getElementById('status-west-choice').textContent = 'Choosing...';
+    const arenaWestImg = document.getElementById('arena-west-image');
+    if (arenaWestImg) {
+        arenaWestImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
+        arenaWestImg.src = westImageSrc;
+    }
+    const arenaWestName = document.getElementById('arena-west-name');
+    if (arenaWestName) arenaWestName.textContent = match.west.wrestler.name;
+    const arenaWestPlayer = document.getElementById('arena-west-player');
+    if (arenaWestPlayer) arenaWestPlayer.textContent = match.west.participant.name;
+
+    // Reset choice indicators
+    const arenaEastChoice = document.getElementById('arena-east-choice');
+    if (arenaEastChoice) arenaEastChoice.textContent = 'Choosing...';
+    const arenaWestChoice = document.getElementById('arena-west-choice');
+    if (arenaWestChoice) arenaWestChoice.textContent = 'Choosing...';
 }
 
 function updateBattleStatsDisplay() {
-    const east = currentBattle.eastStats;
-    const west = currentBattle.westStats;
+    // This function is now a no-op - stats are shown as animated boosts instead
+    // Keeping for backwards compatibility
+}
 
-    document.getElementById('east-spirit').textContent = east.spirit;
-    document.getElementById('east-focus').textContent = east.focus;
-    document.getElementById('east-intimidation').textContent = east.intimidation;
-    document.getElementById('east-crowd').textContent = east.crowdSupport;
-    document.getElementById('east-momentum').textContent = east.momentum;
+// Add an animated stat boost bubble next to the rikishi
+function addStatBoost(side, statName, value) {
+    const container = document.getElementById(`${side}-boosts`);
+    if (!container) return;
 
-    document.getElementById('west-spirit').textContent = west.spirit;
-    document.getElementById('west-focus').textContent = west.focus;
-    document.getElementById('west-intimidation').textContent = west.intimidation;
-    document.getElementById('west-crowd').textContent = west.crowdSupport;
-    document.getElementById('west-momentum').textContent = west.momentum;
+    const boost = document.createElement('div');
+    boost.className = `stat-boost ${value > 0 ? 'positive' : 'negative'}`;
+
+    const sign = value > 0 ? '+' : '';
+    boost.textContent = `${sign}${value} ${statName}`;
+
+    container.appendChild(boost);
+
+    // Remove old boosts if too many (keep last 5)
+    const boosts = container.querySelectorAll('.stat-boost');
+    if (boosts.length > 5) {
+        boosts[0].remove();
+    }
+}
+
+// Clear all stat boosts for a side
+function clearStatBoosts(side) {
+    const container = document.getElementById(`${side}-boosts`);
+    if (container) {
+        container.innerHTML = '';
+    }
+}
+
+// Set move description for a side
+function setMoveDescription(side, moveName, description) {
+    const descEl = document.getElementById(`${side}-move-desc`);
+    if (descEl) {
+        if (moveName && description) {
+            descEl.innerHTML = `<span class="move-name">${moveName}</span>${description}`;
+        } else if (moveName) {
+            descEl.innerHTML = `<span class="move-name">${moveName}</span>`;
+        } else {
+            descEl.innerHTML = '';
+        }
+    }
+}
+
+// Clear move descriptions for both sides
+function clearMoveDescriptions() {
+    setMoveDescription('east', '', '');
+    setMoveDescription('west', '', '');
 }
 
 function showBattlePhase(phaseName) {
@@ -994,10 +1051,16 @@ function showBattlePhase(phaseName) {
 
     // Reset choices
     currentBattle.currentChoice = null;
-    document.getElementById('status-east-choice').textContent = 'Choosing...';
-    document.getElementById('status-east-choice').classList.remove('ready');
-    document.getElementById('status-west-choice').textContent = 'Choosing...';
-    document.getElementById('status-west-choice').classList.remove('ready');
+    const arenaEastChoice = document.getElementById('arena-east-choice');
+    const arenaWestChoice = document.getElementById('arena-west-choice');
+    if (arenaEastChoice) {
+        arenaEastChoice.textContent = 'Choosing...';
+        arenaEastChoice.classList.remove('ready');
+    }
+    if (arenaWestChoice) {
+        arenaWestChoice.textContent = 'Choosing...';
+        arenaWestChoice.classList.remove('ready');
+    }
 
     // Show the right panel
     const panel = document.getElementById(`phase-${phaseName}`);
@@ -1074,13 +1137,21 @@ function resolvePhase(phaseName) {
             // Salt throwing - no winner, just stat gains
             if (eastChoice === 'little') {
                 currentBattle.eastStats.focus += config.saltThrow.little.focus;
+                addStatBoost('east', 'Focus', config.saltThrow.little.focus);
+                setMoveDescription('east', 'Little Salt', 'A measured, focused approach to purify the ring.');
             } else {
                 currentBattle.eastStats.spirit += config.saltThrow.lot.spirit;
+                addStatBoost('east', 'Spirit', config.saltThrow.lot.spirit);
+                setMoveDescription('east', 'Lots of Salt', 'A dramatic display of fighting spirit!');
             }
             if (westChoice === 'little') {
                 currentBattle.westStats.focus += config.saltThrow.little.focus;
+                addStatBoost('west', 'Focus', config.saltThrow.little.focus);
+                setMoveDescription('west', 'Little Salt', 'A measured, focused approach to purify the ring.');
             } else {
                 currentBattle.westStats.spirit += config.saltThrow.lot.spirit;
+                addStatBoost('west', 'Spirit', config.saltThrow.lot.spirit);
+                setMoveDescription('west', 'Lots of Salt', 'A dramatic display of fighting spirit!');
             }
 
             resultTitle = 'Salt Throwing Complete';
@@ -1095,13 +1166,21 @@ function resolvePhase(phaseName) {
             // Display - no winner, just stat gains
             if (eastChoice === 'mawashi') {
                 currentBattle.eastStats.intimidation += config.display.mawashi.intimidation;
+                addStatBoost('east', 'Intimidation', config.display.mawashi.intimidation);
+                setMoveDescription('east', 'Slap Mawashi', 'Aggressive belt slapping to intimidate the opponent.');
             } else {
                 currentBattle.eastStats.crowdSupport += config.display.auraPose.crowdSupport;
+                addStatBoost('east', 'Crowd', config.display.auraPose.crowdSupport);
+                setMoveDescription('east', 'Aura Pose', 'A commanding stance that energizes the crowd!');
             }
             if (westChoice === 'mawashi') {
                 currentBattle.westStats.intimidation += config.display.mawashi.intimidation;
+                addStatBoost('west', 'Intimidation', config.display.mawashi.intimidation);
+                setMoveDescription('west', 'Slap Mawashi', 'Aggressive belt slapping to intimidate the opponent.');
             } else {
                 currentBattle.westStats.crowdSupport += config.display.auraPose.crowdSupport;
+                addStatBoost('west', 'Crowd', config.display.auraPose.crowdSupport);
+                setMoveDescription('west', 'Aura Pose', 'A commanding stance that energizes the crowd!');
             }
 
             resultTitle = 'Intimidation Display Complete';
@@ -1123,19 +1202,31 @@ function resolvePhase(phaseName) {
             if (eastChoice === 'henka') {
                 currentBattle.eastStats.crowdSupport += config.tachiai.henkaPenalty.crowdSupport;
                 currentBattle.eastStats.spirit += config.tachiai.henkaPenalty.spirit;
+                addStatBoost('east', 'Crowd', config.tachiai.henkaPenalty.crowdSupport);
+                addStatBoost('east', 'Spirit', config.tachiai.henkaPenalty.spirit);
+                setMoveDescription('east', 'Henka!', 'A shameful sidestep - the crowd is displeased!');
+            } else {
+                setMoveDescription('east', config.tachiai.labels[eastChoice], eastChoice === 'hard' ? 'Powerful forward charge!' : 'Measured initial clash.');
             }
             if (westChoice === 'henka') {
                 currentBattle.westStats.crowdSupport += config.tachiai.henkaPenalty.crowdSupport;
                 currentBattle.westStats.spirit += config.tachiai.henkaPenalty.spirit;
+                addStatBoost('west', 'Crowd', config.tachiai.henkaPenalty.crowdSupport);
+                addStatBoost('west', 'Spirit', config.tachiai.henkaPenalty.spirit);
+                setMoveDescription('west', 'Henka!', 'A shameful sidestep - the crowd is displeased!');
+            } else {
+                setMoveDescription('west', config.tachiai.labels[westChoice], westChoice === 'hard' ? 'Powerful forward charge!' : 'Measured initial clash.');
             }
 
             // Winner bonus
             if (eastWins) {
                 currentBattle.eastStats.momentum += config.tachiai.winBonus.momentum;
                 currentBattle.eastStats.positioning += config.tachiai.winBonus.positioning;
+                addStatBoost('east', 'Momentum', config.tachiai.winBonus.momentum);
             } else {
                 currentBattle.westStats.momentum += config.tachiai.winBonus.momentum;
                 currentBattle.westStats.positioning += config.tachiai.winBonus.positioning;
+                addStatBoost('west', 'Momentum', config.tachiai.winBonus.momentum);
             }
 
             resultTitle = 'The Tachiai!';
@@ -1159,18 +1250,32 @@ function resolvePhase(phaseName) {
             const eastTechBonus = config.battleTechnique.techniqueBonus[eastChoice];
             const westTechBonus = config.battleTechnique.techniqueBonus[westChoice];
 
+            // East technique description
+            const techDescriptions = {
+                push: { name: 'Oshi (Push)', desc: 'Pushing attack to drive opponent back.' },
+                pull: { name: 'Hiki (Pull)', desc: 'Pulling technique to unbalance opponent.' },
+                grip: { name: 'Yotsu (Belt Grip)', desc: 'Securing the mawashi for control.' }
+            };
+
             Object.keys(eastTechBonus).forEach(stat => {
                 currentBattle.eastStats[stat] += eastTechBonus[stat];
+                addStatBoost('east', stat.charAt(0).toUpperCase() + stat.slice(1), eastTechBonus[stat]);
             });
+            setMoveDescription('east', techDescriptions[eastChoice].name, techDescriptions[eastChoice].desc);
+
             Object.keys(westTechBonus).forEach(stat => {
                 currentBattle.westStats[stat] += westTechBonus[stat];
+                addStatBoost('west', stat.charAt(0).toUpperCase() + stat.slice(1), westTechBonus[stat]);
             });
+            setMoveDescription('west', techDescriptions[westChoice].name, techDescriptions[westChoice].desc);
 
             // Winner gets extra momentum
             if (eastWinsTech) {
                 currentBattle.eastStats.momentum += 2;
+                addStatBoost('east', 'Momentum', 2);
             } else {
                 currentBattle.westStats.momentum += 2;
+                addStatBoost('west', 'Momentum', 2);
             }
 
             resultTitle = 'Battle Technique!';
@@ -2078,22 +2183,6 @@ setupStatusBar = function() {
     if (arenaWestPlayer) arenaWestPlayer.textContent = match.west.participant.name;
     const arenaWestChoice = document.getElementById('arena-west-choice');
     if (arenaWestChoice) arenaWestChoice.textContent = 'Choosing...';
-
-    // Populate the compact status bar
-    const eastImg = document.getElementById('status-east-image');
-    eastImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    eastImg.src = eastImageSrc;
-    document.getElementById('status-east-name').textContent = eastName;
-    document.getElementById('status-east-player').textContent = match.east.participant.name;
-
-    const westImg = document.getElementById('status-west-image');
-    westImg.onerror = function() { this.onerror = null; this.src = placeholderImage; };
-    westImg.src = westImageSrc;
-    document.getElementById('status-west-name').textContent = westName;
-    document.getElementById('status-west-player').textContent = match.west.participant.name;
-
-    document.getElementById('status-east-choice').textContent = 'Choosing...';
-    document.getElementById('status-west-choice').textContent = 'Choosing...';
 };
 
 // Function to update arena choices during battle phases
@@ -2215,5 +2304,97 @@ nextBout = function() {
         currentBoutIndex = nextIndex;
         document.getElementById('battle-result').style.display = 'none';
         initializeBattle();
+    }
+};
+
+// ==========================================
+// SHARED SCREEN MODE & FULLSCREEN
+// ==========================================
+
+let sharedScreenMode = false;
+
+// Toggle shared screen mode for group viewing
+function toggleSharedScreenMode() {
+    const checkbox = document.getElementById('shared-screen-mode');
+    sharedScreenMode = checkbox ? checkbox.checked : false;
+
+    if (sharedScreenMode) {
+        document.body.classList.add('shared-screen-mode');
+        updateTurnIndicator();
+    } else {
+        document.body.classList.remove('shared-screen-mode');
+        hideTurnIndicator();
+    }
+
+    // Save preference
+    localStorage.setItem('sumo_shared_screen_mode', sharedScreenMode);
+}
+
+// Update turn indicator to show whose turn it is
+function updateTurnIndicator(playerName, action) {
+    const indicator = document.getElementById('turn-indicator');
+    if (!indicator) return;
+
+    if (playerName && action) {
+        indicator.textContent = `${playerName}'s turn: ${action}`;
+        indicator.style.display = 'block';
+    } else if (currentBattle && currentBattle.currentSide) {
+        const side = currentBattle.currentSide;
+        const match = currentBattle.match;
+        const participant = side === 'east' ? match.east.participant : match.west.participant;
+        indicator.textContent = `${participant.name}'s turn to choose!`;
+        indicator.style.display = 'block';
+    }
+}
+
+// Hide turn indicator
+function hideTurnIndicator() {
+    const indicator = document.getElementById('turn-indicator');
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+}
+
+// Toggle fullscreen mode
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log('Fullscreen not available:', err);
+            alert('Fullscreen mode is not available in this browser.');
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// Load shared screen preference on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const savedMode = localStorage.getItem('sumo_shared_screen_mode');
+    if (savedMode === 'true') {
+        const checkbox = document.getElementById('shared-screen-mode');
+        if (checkbox) {
+            checkbox.checked = true;
+            toggleSharedScreenMode();
+        }
+    }
+});
+
+// Update turn indicator when side changes during battle
+const originalShowBattlePhase = showBattlePhase;
+showBattlePhase = function(phaseName) {
+    originalShowBattlePhase(phaseName);
+
+    if (sharedScreenMode && currentBattle) {
+        updateTurnIndicator();
+    }
+};
+
+// Update turn indicator when confirming choice
+const originalConfirmPhaseChoice = confirmPhaseChoice;
+confirmPhaseChoice = function(phaseName) {
+    originalConfirmPhaseChoice(phaseName);
+
+    if (sharedScreenMode && currentBattle) {
+        updateTurnIndicator();
     }
 };

@@ -566,6 +566,14 @@ function setupMatchupScreen() {
         return;
     }
 
+    // Prevent re-running setup for the same match
+    if (GameState.matchupSetupForMatchId === match.id) {
+        console.log('Matchup screen already setup for this match, skipping');
+        return;
+    }
+    GameState.matchupSetupForMatchId = match.id;
+    console.log('Setting up matchup screen for match:', match.id);
+
     // Get fighter data
     const east = match.east;
     const west = match.west;
@@ -577,7 +585,8 @@ function setupMatchupScreen() {
     const eastStats = document.getElementById('matchup-east-stats');
     const eastRecord = document.getElementById('matchup-east-record');
 
-    if (eastImage) eastImage.src = `images/${WRESTLERS[east.wrestlerId]?.image || 'ukiyo-e-sumo.jpg'}`;
+    const eastWrestler = WRESTLERS.find(w => w.id === east.wrestlerId);
+    if (eastImage) eastImage.src = eastWrestler?.image || 'images/ukiyo-e-sumo.jpg';
     if (eastRikishi) eastRikishi.textContent = east.rikishiName;
     if (eastPlayer) eastPlayer.textContent = east.isCPU ? 'CPU' : east.playerName;
     if (eastStats) {
@@ -609,7 +618,8 @@ function setupMatchupScreen() {
     const westStats = document.getElementById('matchup-west-stats');
     const westRecord = document.getElementById('matchup-west-record');
 
-    if (westImage) westImage.src = `images/${WRESTLERS[west.wrestlerId]?.image || 'ukiyo-e-sumo.jpg'}`;
+    const westWrestler = WRESTLERS.find(w => w.id === west.wrestlerId);
+    if (westImage) westImage.src = westWrestler?.image || 'images/ukiyo-e-sumo.jpg';
     if (westRikishi) westRikishi.textContent = west.rikishiName;
     if (westPlayer) westPlayer.textContent = west.isCPU ? 'CPU' : west.playerName;
     if (westStats) {
@@ -636,6 +646,7 @@ function setupMatchupScreen() {
 
     // Clear any existing countdown interval to prevent duplicates
     if (GameState.matchupCountdownInterval) {
+        console.log('Clearing existing countdown interval');
         clearInterval(GameState.matchupCountdownInterval);
         GameState.matchupCountdownInterval = null;
     }
@@ -644,14 +655,18 @@ function setupMatchupScreen() {
     let countdown = 5;
     const countdownEl = document.getElementById('matchup-countdown');
     if (countdownEl) countdownEl.textContent = countdown;
+    console.log('Starting matchup countdown from', countdown);
 
     GameState.matchupCountdownInterval = setInterval(() => {
         countdown--;
+        console.log('Countdown tick:', countdown);
         if (countdownEl) countdownEl.textContent = countdown;
 
         if (countdown <= 0) {
+            console.log('Countdown complete, transitioning to battle');
             clearInterval(GameState.matchupCountdownInterval);
             GameState.matchupCountdownInterval = null;
+            GameState.matchupSetupForMatchId = null; // Reset for next match
             // Fade out and transition to battle
             const screen = document.querySelector('.matchup-screen');
             if (screen) {

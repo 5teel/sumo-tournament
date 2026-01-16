@@ -140,6 +140,9 @@ function renderScreen() {
         case 'lobby':
             setupLobbyScreen();
             break;
+        case 'matchup':
+            setupMatchupScreen();
+            break;
         case 'battle':
             setupBattleScreen();
             break;
@@ -535,14 +538,14 @@ async function handleStartTournament() {
                 match: data.currentMatch
             });
 
-            // If we're in the match, go to battle
+            // If we're in the match, go to matchup screen first
             if (data.currentMatch) {
                 addActivityEntry(`<strong>First match:</strong> ${data.currentMatch.east.rikishiName} vs ${data.currentMatch.west.rikishiName}`, 'match');
 
                 const inMatch = data.currentMatch.east.email === GameState.user.email ||
                                data.currentMatch.west.email === GameState.user.email;
                 if (inMatch) {
-                    setState({ screen: 'battle' });
+                    setState({ screen: 'matchup' });
                 }
             }
         }
@@ -550,6 +553,110 @@ async function handleStartTournament() {
         showError(e.message || 'Failed to start tournament');
     }
     showLoading(false);
+}
+
+// ============================================
+// MATCHUP SCREEN
+// ============================================
+
+function setupMatchupScreen() {
+    const match = GameState.match;
+    if (!match) {
+        setState({ screen: 'lobby' });
+        return;
+    }
+
+    // Get fighter data
+    const east = match.east;
+    const west = match.west;
+
+    // Set up east fighter
+    const eastImage = document.getElementById('matchup-east-image');
+    const eastRikishi = document.getElementById('matchup-east-rikishi');
+    const eastPlayer = document.getElementById('matchup-east-player');
+    const eastStats = document.getElementById('matchup-east-stats');
+    const eastRecord = document.getElementById('matchup-east-record');
+
+    if (eastImage) eastImage.src = `images/${WRESTLERS[east.wrestlerId]?.image || 'ukiyo-e-sumo.jpg'}`;
+    if (eastRikishi) eastRikishi.textContent = east.rikishiName;
+    if (eastPlayer) eastPlayer.textContent = east.isCPU ? 'CPU' : east.playerName;
+    if (eastStats) {
+        eastStats.innerHTML = `
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${east.stats?.height || 5}</span>
+                <span class="matchup-stat-label">Height</span>
+            </div>
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${east.stats?.weight || 5}</span>
+                <span class="matchup-stat-label">Weight</span>
+            </div>
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${east.stats?.speed || 5}</span>
+                <span class="matchup-stat-label">Speed</span>
+            </div>
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${east.stats?.technique || 5}</span>
+                <span class="matchup-stat-label">Technique</span>
+            </div>
+        `;
+    }
+    if (eastRecord) eastRecord.textContent = `${east.wins || 0}W - ${east.losses || 0}L`;
+
+    // Set up west fighter
+    const westImage = document.getElementById('matchup-west-image');
+    const westRikishi = document.getElementById('matchup-west-rikishi');
+    const westPlayer = document.getElementById('matchup-west-player');
+    const westStats = document.getElementById('matchup-west-stats');
+    const westRecord = document.getElementById('matchup-west-record');
+
+    if (westImage) westImage.src = `images/${WRESTLERS[west.wrestlerId]?.image || 'ukiyo-e-sumo.jpg'}`;
+    if (westRikishi) westRikishi.textContent = west.rikishiName;
+    if (westPlayer) westPlayer.textContent = west.isCPU ? 'CPU' : west.playerName;
+    if (westStats) {
+        westStats.innerHTML = `
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${west.stats?.height || 5}</span>
+                <span class="matchup-stat-label">Height</span>
+            </div>
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${west.stats?.weight || 5}</span>
+                <span class="matchup-stat-label">Weight</span>
+            </div>
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${west.stats?.speed || 5}</span>
+                <span class="matchup-stat-label">Speed</span>
+            </div>
+            <div class="matchup-stat">
+                <span class="matchup-stat-value">${west.stats?.technique || 5}</span>
+                <span class="matchup-stat-label">Technique</span>
+            </div>
+        `;
+    }
+    if (westRecord) westRecord.textContent = `${west.wins || 0}W - ${west.losses || 0}L`;
+
+    // Start countdown
+    let countdown = 5;
+    const countdownEl = document.getElementById('matchup-countdown');
+
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        if (countdownEl) countdownEl.textContent = countdown;
+
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            // Fade out and transition to battle
+            const screen = document.querySelector('.matchup-screen');
+            if (screen) {
+                screen.style.animation = 'matchupFadeOut 0.5s ease-out forwards';
+            }
+            setTimeout(() => {
+                setState({ screen: 'battle' });
+            }, 500);
+        }
+    }, 1000);
+
+    // Store interval ID in case we need to clean up
+    GameState.matchupCountdownInterval = countdownInterval;
 }
 
 // ============================================
@@ -888,7 +995,7 @@ async function handleNextBout() {
                     setState({
                         match: currentMatch,
                         players: players,
-                        screen: 'battle'
+                        screen: 'matchup'
                     });
                 } else {
                     // Spectator mode - go to lobby to watch feed

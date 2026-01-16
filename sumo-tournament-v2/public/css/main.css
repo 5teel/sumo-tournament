@@ -911,6 +911,336 @@ body {
     }
 }
 
+/* Dohyo Center (between wrestlers) */
+.dohyo-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.dohyo-image {
+    width: 180px;
+    height: auto;
+    border-radius: 50%;
+    opacity: 0.85;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    animation: dohyoGlow 3s ease-in-out infinite;
+}
+
+@keyframes dohyoGlow {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+    }
+}
+
+.dohyo-center .vs-divider {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* ============================================
+   MATCHUP SCREEN
+   ============================================ */
+.matchup-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-light) 100%);
+    animation: matchupFadeIn 0.5s ease-out;
+}
+
+@keyframes matchupFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.matchup-title {
+    font-size: 3rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-bottom: 40px;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    animation: matchupTitlePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes matchupTitlePulse {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 40px rgba(212, 175, 55, 0.8);
+    }
+}
+
+.matchup-arena {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.matchup-fighter {
+    flex: 1;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fighterSlideIn 0.6s ease-out;
+}
+
+.matchup-fighter.east {
+    animation-delay: 0.2s;
+    animation-fill-mode: backwards;
+}
+
+.matchup-fighter.west {
+    animation-delay: 0.4s;
+    animation-fill-mode: backwards;
+}
+
+@keyframes fighterSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.matchup-image-container {
+    width: 200px;
+    height: 260px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 3px solid var(--color-accent);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    margin-bottom: 15px;
+}
+
+.matchup-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.matchup-rikishi {
+    font-size: 1.8rem;
+    color: var(--color-text);
+    margin-bottom: 5px;
+}
+
+.matchup-player {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+}
+
+.matchup-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    background: var(--color-surface);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+}
+
+.matchup-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.matchup-stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.matchup-stat-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--color-accent);
+}
+
+.matchup-record {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    padding: 8px 16px;
+    background: var(--color-bg-light);
+    border-radius: 20px;
+}
+
+.matchup-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.matchup-dohyo {
+    width: 220px;
+    height: auto;
+    border-radius: 50%;
+    opacity: 0.9;
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+    animation: matchupDohyoGlow 2s ease-in-out infinite;
+}
+
+@keyframes matchupDohyoGlow {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 60px rgba(212, 175, 55, 0.6);
+        transform: scale(1.02);
+    }
+}
+
+.matchup-vs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-accent);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.8),
+                 0 0 40px rgba(212, 175, 55, 0.4);
+    animation: matchupVsPulse 1s ease-in-out infinite;
+}
+
+@keyframes matchupVsPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+.matchup-countdown {
+    margin-top: 40px;
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-shadow: 0 0 20px rgba(196, 30, 58, 0.5);
+    animation: countdownPulse 1s ease-in-out infinite;
+}
+
+@keyframes countdownPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes matchupFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Matchup screen responsive */
+@media (max-width: 900px) {
+    .matchup-arena {
+        gap: 20px;
+    }
+
+    .matchup-fighter {
+        max-width: 280px;
+    }
+
+    .matchup-image-container {
+        width: 150px;
+        height: 195px;
+    }
+
+    .matchup-dohyo {
+        width: 160px;
+    }
+
+    .matchup-title {
+        font-size: 2rem;
+        letter-spacing: 4px;
+    }
+}
+
+@media (max-width: 600px) {
+    .matchup-arena {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .matchup-center {
+        order: -1;
+        margin-bottom: 10px;
+    }
+
+    .matchup-dohyo {
+        width: 120px;
+    }
+
+    .matchup-vs {
+        font-size: 2rem;
+    }
+
+    .matchup-fighter {
+        max-width: 100%;
+    }
+
+    .matchup-image-container {
+        width: 120px;
+        height: 156px;
+    }
+
+    .matchup-rikishi {
+        font-size: 1.4rem;
+    }
+
+    .matchup-title {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+
+    .matchup-countdown {
+        font-size: 3rem;
+        margin-top: 20px;
+    }
+}
+
 /* Choice Panel */
 .choice-panel {
     background: var(--color-surface);
@@ -1412,6 +1742,10 @@ body {
         padding: 12px;
     }
 
+    .dohyo-image {
+        width: 120px;
+    }
+
     .wrestler-panel {
         padding: 5px;
     }
@@ -1668,8 +2002,12 @@ body {
         text-align: center;
     }
 
-    .vs-divider {
+    .dohyo-center {
         order: 0;
+    }
+
+    .dohyo-image {
+        width: 100px;
     }
 
     .wrestler-panel.east {

@@ -245,8 +245,11 @@
                         <div class="announcement-box" id="east-announcement"></div>
                     </div>
 
-                    <div class="vs-divider">
-                        <span>VS</span>
+                    <div class="dohyo-center">
+                        <img src="images/Dohyo 1.png" alt="Dohyo" class="dohyo-image">
+                        <div class="vs-divider">
+                            <span>VS</span>
+                        </div>
                     </div>
 
                     <div class="wrestler-panel west">
@@ -298,6 +301,50 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- MATCHUP SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="matchup-screen">
+        <div class="screen matchup-screen">
+            <h2 class="matchup-title">NEXT BOUT</h2>
+
+            <div class="matchup-arena">
+                <div class="matchup-fighter east">
+                    <div class="matchup-image-container">
+                        <img src="" alt="" class="matchup-image" id="matchup-east-image">
+                    </div>
+                    <h3 class="matchup-rikishi" id="matchup-east-rikishi"></h3>
+                    <p class="matchup-player" id="matchup-east-player"></p>
+                    <div class="matchup-stats" id="matchup-east-stats">
+                        <!-- Stats populated by JS -->
+                    </div>
+                    <div class="matchup-record" id="matchup-east-record"></div>
+                </div>
+
+                <div class="matchup-center">
+                    <img src="images/Dohyo 1.png" alt="Dohyo" class="matchup-dohyo">
+                    <div class="matchup-vs">VS</div>
+                </div>
+
+                <div class="matchup-fighter west">
+                    <div class="matchup-image-container">
+                        <img src="" alt="" class="matchup-image" id="matchup-west-image">
+                    </div>
+                    <h3 class="matchup-rikishi" id="matchup-west-rikishi"></h3>
+                    <p class="matchup-player" id="matchup-west-player"></p>
+                    <div class="matchup-stats" id="matchup-west-stats">
+                        <!-- Stats populated by JS -->
+                    </div>
+                    <div class="matchup-record" id="matchup-west-record"></div>
+                </div>
+            </div>
+
+            <div class="matchup-countdown">
+                <span id="matchup-countdown">5</span>
             </div>
         </div>
     </template>

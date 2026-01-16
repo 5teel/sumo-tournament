@@ -5,7 +5,7 @@
 
 const GameState = {
     // Current screen
-    screen: 'home', // home | login | register | lobby | battle | results | champion
+    screen: 'home', // home | login | register | lobby | matchup | battle | results | champion
 
     // User & session
     user: null,
@@ -169,13 +169,13 @@ function startPolling() {
 
                 // Detect new match started (different match ID)
                 const newMatchStarted = prevMatchId && newMatchId && prevMatchId !== newMatchId;
-                if (newMatchStarted && GameState.screen === 'battle') {
-                    console.log('New match started, refreshing battle screen');
+                if (newMatchStarted && (GameState.screen === 'battle' || GameState.screen === 'matchup')) {
+                    console.log('New match started, showing matchup screen');
                     // Check if we're in this new match
                     const inMatch = data.currentMatch.east.email === GameState.user?.email ||
                                    data.currentMatch.west.email === GameState.user?.email;
                     if (inMatch && data.currentMatch.status === 'active') {
-                        setState({ screen: 'battle', match: data.currentMatch });
+                        setState({ screen: 'matchup', match: data.currentMatch });
                     }
                 }
 
@@ -276,10 +276,10 @@ function checkMatchState(match) {
         return;
     }
 
-    // Transition to battle if match started and we're in lobby
+    // Transition to matchup if match started and we're in lobby
     if (match.status === 'active' && GameState.screen === 'lobby') {
         if (GameState.mySide !== 'spectator') {
-            setState({ screen: 'battle' });
+            setState({ screen: 'matchup' });
         }
     }
 

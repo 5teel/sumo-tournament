@@ -146,6 +146,9 @@ function renderScreen() {
         case 'battle':
             setupBattleScreen();
             break;
+        case 'bout-winner':
+            setupBoutWinnerScreen();
+            break;
         case 'results':
             setupResultsScreen();
             break;
@@ -680,6 +683,82 @@ function setupMatchupScreen() {
 }
 
 // ============================================
+// BOUT WINNER SCREEN
+// ============================================
+
+function setupBoutWinnerScreen() {
+    const match = GameState.lastCompletedMatch;
+    if (!match || !match.winner) {
+        console.log('No completed match data, going to lobby');
+        setState({ screen: 'lobby' });
+        return;
+    }
+
+    // Prevent re-running setup for the same match
+    if (GameState.boutWinnerSetupForMatchId === match.id) {
+        console.log('Bout winner screen already setup for this match, skipping');
+        return;
+    }
+    GameState.boutWinnerSetupForMatchId = match.id;
+    console.log('Setting up bout winner screen for match:', match.id);
+
+    const winner = match[match.winner];
+    const winnerWrestler = WRESTLERS.find(w => w.id === winner.wrestlerId);
+
+    // Set winner image
+    const winnerImage = document.getElementById('bout-winner-image');
+    if (winnerImage) {
+        winnerImage.src = winnerWrestler?.image || 'images/ukiyo-e-sumo.jpg';
+    }
+
+    // Set winner name
+    const winnerName = document.getElementById('bout-winner-name');
+    if (winnerName) {
+        winnerName.textContent = winner.rikishiName;
+    }
+
+    // Set winning move - get the finish phase result
+    const winningMove = document.getElementById('bout-winner-move');
+    if (winningMove) {
+        const finishResult = match.phaseResults?.finish;
+        let moveText = 'Victory!';
+        if (finishResult) {
+            const winnerChoice = finishResult[match.winner + 'Choice'];
+            // Find the label for this choice
+            const finishPhase = PHASES.finish;
+            const choiceData = finishPhase?.choices.find(c => c.id === winnerChoice);
+            if (choiceData) {
+                moveText = `by ${choiceData.label}`;
+            }
+        }
+        winningMove.textContent = moveText;
+    }
+
+    // Set record
+    const winnerRecord = document.getElementById('bout-winner-record');
+    if (winnerRecord) {
+        const wins = winner.wins || 0;
+        const losses = winner.losses || 0;
+        winnerRecord.innerHTML = `<span class="wins">${wins}W</span> - <span class="losses">${losses}L</span>`;
+    }
+
+    // Auto-transition to next matchup after 4 seconds
+    setTimeout(() => {
+        // Fade out
+        const screen = document.querySelector('.bout-winner-screen');
+        if (screen) {
+            screen.style.animation = 'boutWinnerFadeOut 0.5s ease-out forwards';
+        }
+
+        setTimeout(() => {
+            GameState.boutWinnerSetupForMatchId = null;
+            // Check if there's a next match
+            handleNextBout();
+        }, 500);
+    }, 4000);
+}
+
+// ============================================
 // BATTLE SCREEN
 // ============================================
 
@@ -832,9 +911,12 @@ async function submitChoice() {
                     GameState.user.losses = (GameState.user.losses || 0) + 1;
                 }
 
-                // Automatically progress to next match after brief delay
+                // Store completed match and show bout-winner screen after brief delay
                 setTimeout(() => {
-                    handleNextBout();
+                    setState({
+                        lastCompletedMatch: data.match,
+                        screen: 'bout-winner'
+                    });
                 }, 2000);
             } else {
                 // Advance to next phase after delay

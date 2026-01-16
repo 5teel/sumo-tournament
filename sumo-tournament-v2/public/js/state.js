@@ -5,7 +5,10 @@
 
 const GameState = {
     // Current screen
-    screen: 'home', // home | login | register | lobby | matchup | battle | results | champion
+    screen: 'home', // home | login | register | lobby | matchup | battle | bout-winner | results | champion
+
+    // Last completed match (for bout-winner screen)
+    lastCompletedMatch: null,
 
     // User & session
     user: null,
@@ -73,10 +76,10 @@ function setState(updates, options = {}) {
     }
 
     // Only re-render if screen changed or explicitly requested
-    // Skip re-render for polling updates on battle/matchup screens to preserve UI state
+    // Skip re-render for polling updates on battle/matchup/bout-winner screens to preserve UI state
     const screenChanged = updates.screen !== undefined && updates.screen !== previousScreen;
     const skipRender = options.skipRender ||
-        ((GameState.screen === 'battle' || GameState.screen === 'matchup') && !screenChanged && !updates.screen);
+        ((GameState.screen === 'battle' || GameState.screen === 'matchup' || GameState.screen === 'bout-winner') && !screenChanged && !updates.screen);
 
     if (!skipRender && typeof renderScreen === 'function') {
         renderScreen();
@@ -314,11 +317,12 @@ function handleMatchCompletedDuringPolling(match) {
         GameState.user.losses = (GameState.user.losses || 0) + 1;
     }
 
-    // Auto-advance to next match
+    // Show bout-winner screen
     setTimeout(() => {
-        if (typeof handleNextBout === 'function') {
-            handleNextBout();
-        }
+        setState({
+            lastCompletedMatch: match,
+            screen: 'bout-winner'
+        });
     }, 2500);
 }
 
@@ -432,7 +436,7 @@ function handleTimerExpired(match) {
             if (westAnn) westAnn.textContent = '';
         }, 2500);
     } else if (match.status === 'completed') {
-        // Match is over - let the normal flow handle it via checkMatchState
+        // Match is over - show bout-winner screen
         const winner = match[match.winner];
         const loser = match[match.winner === 'east' ? 'west' : 'east'];
 
@@ -447,11 +451,12 @@ function handleTimerExpired(match) {
             GameState.user.losses = (GameState.user.losses || 0) + 1;
         }
 
-        // Auto-advance to next match
+        // Show bout-winner screen
         setTimeout(() => {
-            if (typeof handleNextBout === 'function') {
-                handleNextBout();
-            }
+            setState({
+                lastCompletedMatch: match,
+                screen: 'bout-winner'
+            });
         }, 2000);
     }
 }

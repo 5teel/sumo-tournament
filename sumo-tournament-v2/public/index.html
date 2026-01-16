@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumo Tournament V2</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Content injected by JavaScript -->
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOME SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="home-screen">
+        <div class="screen home-screen">
+            <div class="home-content">
+                <h1 class="game-title">Sumo Tournament</h1>
+                <p class="game-subtitle">Enter the sacred dohyo and prove your worth</p>
+
+                <div class="home-buttons">
+                    <button class="btn btn-primary btn-large" data-action="register">
+                        Register for Tournament
+                    </button>
+                    <button class="btn btn-secondary" data-action="login">
+                        Returning Player? Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- LOGIN SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="login-screen">
+        <div class="screen login-screen">
+            <div class="form-container">
+                <h2>Welcome Back</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-secondary" data-action="back-home">Back</button>
+                    </div>
+                </form>
+                <p class="error-message" id="login-error"></p>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- REGISTRATION SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="register-screen">
+        <div class="screen register-screen">
+            <div class="form-container">
+                <h2>Join the Tournament</h2>
+                <div class="step-indicator">
+                    <span class="step active" data-step="1">1. Info</span>
+                    <span class="step" data-step="2">2. Wrestler</span>
+                    <span class="step" data-step="3">3. Stats</span>
+                </div>
+
+                <!-- Step 1: Basic Info -->
+                <div class="register-step" id="register-step-1">
+                    <div class="form-group">
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-name">Your Name</label>
+                        <input type="text" id="reg-name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-rikishi">Rikishi Name (Ring Name)</label>
+                        <input type="text" id="reg-rikishi" required placeholder="Your sumo wrestler name">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" data-action="next-step">Next</button>
+                        <button type="button" class="btn btn-secondary" data-action="back-home">Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Wrestler Selection -->
+                <div class="register-step hidden" id="register-step-2">
+                    <p>Choose your wrestler appearance:</p>
+                    <div class="wrestler-grid" id="wrestler-grid">
+                        <!-- Wrestlers populated by JS -->
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-action="prev-step">Back</button>
+                        <button type="button" class="btn btn-primary" data-action="next-step">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Stats & Signature Move -->
+                <div class="register-step hidden" id="register-step-3">
+                    <p>Allocate your stats (20 points total):</p>
+                    <div class="stat-allocation">
+                        <div class="stat-row">
+                            <label>Height</label>
+                            <input type="range" min="1" max="10" value="5" data-stat="height">
+                            <span class="stat-value">5</span>
+                            <span class="stat-display">(190cm)</span>
+                        </div>
+                        <div class="stat-row">
+                            <label>Weight</label>
+                            <input type="range" min="1" max="10" value="5" data-stat="weight">
+                            <span class="stat-value">5</span>
+                            <span class="stat-display">(140kg)</span>
+                        </div>
+                        <div class="stat-row">
+                            <label>Speed</label>
+                            <input type="range" min="1" max="10" value="5" data-stat="speed">
+                            <span class="stat-value">5</span>
+                        </div>
+                        <div class="stat-row">
+                            <label>Technique</label>
+                            <input type="range" min="1" max="10" value="5" data-stat="technique">
+                            <span class="stat-value">5</span>
+                        </div>
+                    </div>
+                    <p class="stat-total">Points remaining: <span id="points-remaining">0</span></p>
+
+                    <div class="form-group">
+                        <label>Signature Move</label>
+                        <div class="signature-moves">
+                            <label class="move-option">
+                                <input type="radio" name="signature" value="yorikiri" checked>
+                                <span>Yorikiri (Force Out)</span>
+                            </label>
+                            <label class="move-option">
+                                <input type="radio" name="signature" value="oshidashi">
+                                <span>Oshidashi (Push Out)</span>
+                            </label>
+                            <label class="move-option">
+                                <input type="radio" name="signature" value="uwatenage">
+                                <span>Uwatenage (Overarm Throw)</span>
+                            </label>
+                            <label class="move-option">
+                                <input type="radio" name="signature" value="hatakikomi">
+                                <span>Hatakikomi (Slap Down)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-action="prev-step">Back</button>
+                        <button type="button" class="btn btn-primary" data-action="register-submit">Register</button>
+                    </div>
+                </div>
+
+                <p class="error-message" id="register-error"></p>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- LOBBY SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="lobby-screen">
+        <div class="screen lobby-screen">
+            <div class="lobby-header">
+                <h2>Tournament Lobby</h2>
+                <button class="btn btn-secondary btn-small" data-action="logout">Logout</button>
+            </div>
+
+            <div class="lobby-content">
+                <div class="lobby-main">
+                    <div class="player-list-container">
+                        <h3>Players <span class="player-count"></span></h3>
+                        <ul class="player-list" id="player-list">
+                            <!-- Players populated by JS -->
+                        </ul>
+                    </div>
+
+                    <div class="lobby-info">
+                        <div class="current-user-card" id="current-user-card">
+                            <!-- Current user info -->
+                        </div>
+
+                        <div class="lobby-actions">
+                            <button class="btn btn-primary btn-large admin-only" data-action="start-tournament">
+                                Start Tournament
+                            </button>
+                            <button class="btn btn-secondary btn-small admin-only" data-action="reset-tournament" style="margin-top: 10px;">
+                                Reset Tournament
+                            </button>
+                            <p class="admin-hint admin-only">You are the tournament admin</p>
+                            <p class="waiting-hint non-admin">Waiting for admin to start...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-feed-container">
+                    <h3>Tournament Activity</h3>
+                    <div class="activity-feed" id="activity-feed">
+                        <div class="activity-entry activity-info">
+                            <span class="activity-time">--:--:--</span> Waiting for tournament to start...
+                        </div>
+                    </div>
+                    <div class="trophy-container">
+                        <span class="trophy-image">🏆</span>
+                        <div class="trophy-text">
+                            <div class="trophy-label">Win the Cup</div>
+                            <div class="trophy-goal">5 WINS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- BATTLE SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="battle-screen">
+        <div class="screen battle-screen">
+            <div class="battle-header">
+                <button class="btn btn-secondary btn-small" data-action="back-home">Home</button>
+                <div class="phase-indicator">
+                    <span class="phase-name" id="phase-name">Salt Ritual</span>
+                </div>
+                <div class="timer" id="timer">
+                    <span class="timer-value">10</span>
+                </div>
+            </div>
+
+            <div class="battle-content">
+                <div class="battle-arena">
+                    <div class="wrestler-panel east">
+                        <div class="wrestler-image-container">
+                            <img src="" alt="" class="wrestler-image" id="east-image">
+                        </div>
+                        <div class="wrestler-info">
+                            <h3 class="rikishi-name" id="east-rikishi"></h3>
+                            <p class="player-name" id="east-player"></p>
+                        </div>
+                        <div class="announcement-box" id="east-announcement"></div>
+                    </div>
+
+                    <div class="vs-divider">
+                        <span>VS</span>
+                    </div>
+
+                    <div class="wrestler-panel west">
+                        <div class="wrestler-image-container">
+                            <img src="" alt="" class="wrestler-image" id="west-image">
+                        </div>
+                        <div class="wrestler-info">
+                            <h3 class="rikishi-name" id="west-rikishi"></h3>
+                            <p class="player-name" id="west-player"></p>
+                        </div>
+                        <div class="announcement-box" id="west-announcement"></div>
+                    </div>
+                </div>
+
+                <div class="choice-panel" id="choice-panel">
+                    <h4>Choose your action:</h4>
+                    <div class="choices" id="choices">
+                        <!-- Choices populated by JS -->
+                    </div>
+                    <button class="btn btn-primary" id="confirm-choice" disabled>Confirm</button>
+                </div>
+
+                <div class="waiting-overlay hidden" id="waiting-overlay">
+                    <p>Waiting for opponent...</p>
+                </div>
+
+                <div class="spectator-panel hidden" id="spectator-panel">
+                    <p>Watching the match...</p>
+                </div>
+            </div>
+
+            <div class="battle-sidebar">
+                <div class="sidebar-section">
+                    <h4>Players</h4>
+                    <ul class="sidebar-player-list" id="sidebar-players">
+                        <!-- Players populated by JS -->
+                    </ul>
+                </div>
+                <div class="sidebar-section">
+                    <h4>Activity</h4>
+                    <div class="activity-feed activity-feed-compact" id="activity-feed">
+                        <!-- Activity populated by JS -->
+                    </div>
+                    <div class="trophy-container trophy-container-compact">
+                        <span class="trophy-image">🏆</span>
+                        <div class="trophy-text">
+                            <div class="trophy-label">Win the Cup</div>
+                            <div class="trophy-goal">5 WINS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- RESULTS SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="results-screen">
+        <div class="screen results-screen">
+            <div class="results-content">
+                <h2 class="winner-announcement" id="winner-announcement">
+                    <!-- Winner name -->
+                </h2>
+                <p class="winning-move" id="winning-move">
+                    <!-- Winning move -->
+                </p>
+
+                <div class="match-summary" id="match-summary">
+                    <!-- Phase by phase breakdown -->
+                </div>
+
+                <div class="qualification-status" id="qualification-status">
+                    <!-- Qualification progress -->
+                </div>
+
+                <div class="results-actions">
+                    <button class="btn btn-primary btn-large" data-action="next-bout">Next Bout</button>
+                    <button class="btn btn-secondary" data-action="back-lobby">Back to Lobby</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- TOURNAMENT WINNER SCREEN TEMPLATE -->
+    <!-- ============================================ -->
+    <template id="champion-screen">
+        <div class="screen champion-screen">
+            <div class="champion-content">
+                <div class="champion-trophy">🏆</div>
+                <h1 class="champion-title">TOURNAMENT CHAMPION!</h1>
+                <div class="champion-wrestler">
+                    <img src="" alt="" class="champion-image" id="champion-image">
+                    <h2 class="champion-name" id="champion-name"></h2>
+                    <p class="champion-player" id="champion-player"></p>
+                </div>
+                <div class="champion-record" id="champion-record"></div>
+                <div class="champion-actions">
+                    <button class="btn btn-primary btn-large" data-action="new-tournament">New Tournament</button>
+                </div>
+            </div>
+            <div class="confetti" id="confetti"></div>
+        </div>
+    </template>
+
+    <!-- ============================================ -->
+    <!-- LOADING OVERLAY -->
+    <!-- ============================================ -->
+    <div class="loading-overlay hidden" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ERROR TOAST -->
+    <!-- ============================================ -->
+    <div class="error-toast hidden" id="error-toast">
+        <p class="error-message"></p>
+        <button class="btn btn-small" data-action="dismiss-error">Dismiss</button>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOUND CONTROL BAR -->
+    <!-- ============================================ -->
+    <div class="sound-control" id="sound-control">
+        <button class="sound-mute-btn" id="sound-mute-btn" title="Toggle Sound">
+            <span class="sound-icon" id="sound-icon">&#128266;</span>
+        </button>
+        <input type="range" class="sound-slider" id="sound-slider" min="0" max="100" value="50" title="Volume">
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/sound.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

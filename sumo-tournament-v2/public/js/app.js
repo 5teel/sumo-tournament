@@ -593,13 +593,15 @@ function setupMatchupScreen() {
     if (eastRikishi) eastRikishi.textContent = east.rikishiName;
     if (eastPlayer) eastPlayer.textContent = east.isCPU ? 'CPU' : east.playerName;
     if (eastStats) {
+        const eastHeight = 175 + (east.stats?.height || 5) * 3;
+        const eastWeight = 110 + (east.stats?.weight || 5) * 6;
         eastStats.innerHTML = `
             <div class="matchup-stat">
-                <span class="matchup-stat-value">${east.stats?.height || 5}</span>
+                <span class="matchup-stat-value">${eastHeight}cm</span>
                 <span class="matchup-stat-label">Height</span>
             </div>
             <div class="matchup-stat">
-                <span class="matchup-stat-value">${east.stats?.weight || 5}</span>
+                <span class="matchup-stat-value">${eastWeight}kg</span>
                 <span class="matchup-stat-label">Weight</span>
             </div>
             <div class="matchup-stat">
@@ -626,13 +628,15 @@ function setupMatchupScreen() {
     if (westRikishi) westRikishi.textContent = west.rikishiName;
     if (westPlayer) westPlayer.textContent = west.isCPU ? 'CPU' : west.playerName;
     if (westStats) {
+        const westHeight = 175 + (west.stats?.height || 5) * 3;
+        const westWeight = 110 + (west.stats?.weight || 5) * 6;
         westStats.innerHTML = `
             <div class="matchup-stat">
-                <span class="matchup-stat-value">${west.stats?.height || 5}</span>
+                <span class="matchup-stat-value">${westHeight}cm</span>
                 <span class="matchup-stat-label">Height</span>
             </div>
             <div class="matchup-stat">
-                <span class="matchup-stat-value">${west.stats?.weight || 5}</span>
+                <span class="matchup-stat-value">${westWeight}kg</span>
                 <span class="matchup-stat-label">Weight</span>
             </div>
             <div class="matchup-stat">

@@ -2,7 +2,12 @@
 node_modules/
 
 # Persistent data (user registrations, win/loss records)
-data/
+/data/
+sumo-tournament-v2/data/
+
+# But allow static wrestler config
+!sumo-tournament-v2/server/data/
+!sumo-tournament-v2/server/data/wrestlers.js
 
 # OS files
 .DS_Store

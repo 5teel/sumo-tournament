@@ -73,10 +73,10 @@ function setState(updates, options = {}) {
     }
 
     // Only re-render if screen changed or explicitly requested
-    // Skip re-render for polling updates on battle screen to preserve button selection
+    // Skip re-render for polling updates on battle/matchup screens to preserve UI state
     const screenChanged = updates.screen !== undefined && updates.screen !== previousScreen;
     const skipRender = options.skipRender ||
-        (GameState.screen === 'battle' && !screenChanged && !updates.screen);
+        ((GameState.screen === 'battle' || GameState.screen === 'matchup') && !screenChanged && !updates.screen);
 
     if (!skipRender && typeof renderScreen === 'function') {
         renderScreen();

@@ -634,16 +634,24 @@ function setupMatchupScreen() {
     }
     if (westRecord) westRecord.textContent = `${west.wins || 0}W - ${west.losses || 0}L`;
 
+    // Clear any existing countdown interval to prevent duplicates
+    if (GameState.matchupCountdownInterval) {
+        clearInterval(GameState.matchupCountdownInterval);
+        GameState.matchupCountdownInterval = null;
+    }
+
     // Start countdown
     let countdown = 5;
     const countdownEl = document.getElementById('matchup-countdown');
+    if (countdownEl) countdownEl.textContent = countdown;
 
-    const countdownInterval = setInterval(() => {
+    GameState.matchupCountdownInterval = setInterval(() => {
         countdown--;
         if (countdownEl) countdownEl.textContent = countdown;
 
         if (countdown <= 0) {
-            clearInterval(countdownInterval);
+            clearInterval(GameState.matchupCountdownInterval);
+            GameState.matchupCountdownInterval = null;
             // Fade out and transition to battle
             const screen = document.querySelector('.matchup-screen');
             if (screen) {
@@ -654,9 +662,6 @@ function setupMatchupScreen() {
             }, 500);
         }
     }, 1000);
-
-    // Store interval ID in case we need to clean up
-    GameState.matchupCountdownInterval = countdownInterval;
 }
 
 // ============================================

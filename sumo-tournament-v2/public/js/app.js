@@ -21,43 +21,43 @@ const WRESTLERS = [
 // Phase definitions (mirror server)
 const PHASES = {
     salt: {
-        name: 'Salt Ritual',
+        name: 'Salt Ritual (Shio)',
         choices: [
             { id: 'little', label: 'Little Salt', icon: '🧂' },
             { id: 'lots', label: 'Lots of Salt', icon: '🧂🧂' }
         ]
     },
     display: {
-        name: 'Intimidation Display',
+        name: 'Intimidation Display (Shikiri)',
         choices: [
-            { id: 'mawashi', label: 'Slap Mawashi', icon: '👋' },
+            { id: 'mawashi', label: 'Slap Mawashi (Belt)', icon: '👋' },
             { id: 'aura', label: 'Powerful Aura', icon: '✨' }
         ]
     },
     tachiai: {
-        name: 'Tachiai!',
+        name: 'Tachiai (Initial Charge)!',
         choices: [
             { id: 'hard', label: 'Hard Charge', icon: '💥' },
             { id: 'soft', label: 'Soft Absorb', icon: '🛡️' },
-            { id: 'henka', label: 'Henka', icon: '↪️' }
+            { id: 'henka', label: 'Henka (Sidestep)', icon: '↪️' }
         ]
     },
     technique: {
-        name: 'Attack!',
+        name: 'Attack (Waza)!',
         choices: [
             { id: 'grip', label: 'Belt Grip', icon: '🤝' },
-            { id: 'tsuppari', label: 'Tsuppari', icon: '✋' },
+            { id: 'tsuppari', label: 'Tsuppari (Thrusts)', icon: '✋' },
             { id: 'push', label: 'Push Attack', icon: '➡️' },
             { id: 'pull', label: 'Pull Down', icon: '⬅️' }
         ]
     },
     finish: {
-        name: 'Finishing Move!',
+        name: 'Kimarite (Finishing Move)!',
         choices: [
-            { id: 'yorikiri', label: 'Yorikiri', icon: '🔄' },
-            { id: 'oshidashi', label: 'Oshidashi', icon: '💨' },
-            { id: 'uwatenage', label: 'Uwatenage', icon: '🌀' },
-            { id: 'hatakikomi', label: 'Hatakikomi', icon: '⬇️' }
+            { id: 'yorikiri', label: 'Yorikiri (Force Out)', icon: '🔄' },
+            { id: 'oshidashi', label: 'Oshidashi (Push Out)', icon: '💨' },
+            { id: 'uwatenage', label: 'Uwatenage (Overarm Throw)', icon: '🌀' },
+            { id: 'hatakikomi', label: 'Hatakikomi (Slap Down)', icon: '⬇️' }
         ]
     }
 };
